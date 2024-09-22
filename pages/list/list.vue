@@ -1,6 +1,7 @@
 <template>
   <view>
-    <uni-search-bar class="search-bar" @confirm="search" v-model="searchValue" @blur="blur" @focus="focus"
+    <uni-search-bar class="search-bar" placeholder="请输入宝可梦名称" @confirm="search" v-model="searchValue"
+                    @blur="blur" @focus="focus"
                     @input="input"
                     cancel-text="筛选"
                     @cancel="cancel" @clear="clear">
@@ -27,8 +28,9 @@
       </uni-list>
     </uni-list>
 
-    <uni-data-picker v-model="item" :localdata="items" popup-title="请选择" @change="onchange" ref="picker"
-                     class="list-data-picker"></uni-data-picker>
+    <uni-data-picker @popupclosed="popupclosed" v-model="item" :localdata="items" popup-title="请选择"
+                     @change="onchange" ref="picker"
+                     :class="!show?'list-data-picker':''"></uni-data-picker>
 
 
   </view>
@@ -40,37 +42,38 @@ import {getList} from "../../server";
 export default {
   data() {
     return {
+      show: false,
       item: '0',
       items: [{
         text: "全部",
         value: "0",
       }, {
         text: "第一世代",
-        value: "0|151",
+        value: "1|151",
       }, {
         text: "第二世代",
-        value: "152|300",
+        value: "152|251",
       }, {
         text: "第三世代",
-        value: "3",
+        value: "252|386",
       }, {
         text: "第四世代",
-        value: "4",
+        value: "387|493",
       }, {
         text: "第五世代",
-        value: "5",
+        value: "494|649",
       }, {
         text: "第六世代",
-        value: "6",
+        value: "650|721",
       }, {
         text: "第七世代",
-        value: "7",
+        value: "722|810",
       }, {
         text: "第八世代",
-        value: "8",
+        value: "811|905",
       }, {
         text: "第九世代",
-        value: "9",
+        value: "906|1026",
       }],
       status: 'loading',
       list: [],
@@ -89,6 +92,9 @@ export default {
   methods: {
     blur() {
     },
+    popupclosed() {
+      this.show = false;
+    },
     onchange() {
       console.log(this.item)
       if (this.item === '0') {
@@ -97,7 +103,7 @@ export default {
         this.index = 0;
       } else {
         let startEnd = this.item.split('|');
-        this.list = this.paginateArray(this.rawData.slice(parseInt(startEnd[0]), parseInt(startEnd[1])), 15);
+        this.list = this.paginateArray(this.rawData.slice(startEnd[0] - 1, startEnd[1] - 1), 15);
         this.data = this.list[0];
         this.index = 0;
       }
@@ -126,6 +132,7 @@ export default {
     input() {
     },
     cancel() {
+      this.show = true;
       this.$refs.picker.show();
     },
     clear() {
@@ -153,8 +160,7 @@ export default {
 }
 
 .list-data-picker {
-  width: 0;
-  height: 0;
+  display: none !important;
 }
 
 .popup-height {
