@@ -1,36 +1,53 @@
 <template>
-  <view>
-    <uni-search-bar class="search-bar" placeholder="请输入宝可梦名称" @confirm="search" v-model="searchValue"
-                    @blur="blur" @focus="focus"
-                    @input="input"
-                    cancel-text="筛选"
-                    @cancel="cancel" @clear="clear">
-    </uni-search-bar>
+  <view class="ne-list">
+
+    <view class="ne-top">
+
+
+      <uni-search-bar class="search-bar" v-if="searchShow" :focus="true" placeholder="搜索全国图鉴" @confirm="search"
+                      v-model="searchValue"
+                      @blur="blur" @focus="focus"
+                      @input="input"
+                      @cancel="searchShow = false" @clear="clear">
+      </uni-search-bar>
+
+
+      <image src="@/static/search.png" class="icon search" v-if="!searchShow"
+             @tap.prevent.stop="searchShow = true"></image>
+      <image src="@/static/menu.png" class="icon menu" v-if="!searchShow"></image>
+
+
+      <view style="display: flex;justify-content: center;" v-if="!searchShow">
+        <slider :data="menu" :width="90"></slider>
+      </view>
+
+
+    </view>
+
+
     <view style="height: 56px"></view>
-    <uni-list>
-      <uni-list :border="true">
+
+
+    <view class="list-main">
+
+
+      <uni-list class="uni-list-main" :border="false">
         <!-- 显示圆形头像 -->
 
 
         <template v-for="item in data">
 
-          <!--          <uni-list-chat :avatar-circle="true" :title="item.name"-->
-          <!--                         avatar="https://qiniu-web-assets.dcloud.net.cn/unidoc/zh/unicloudlogo.png" :time="'#'+item.id"-->
-          <!--          ></uni-list-chat>-->
-
-          <uni-list-item :title="item.name" :thumb="`https://pokepast.es/img/pokemon/${inter(item.id)}-0.png`"
+          <uni-list-item :key="item.id" :title="item.name" class="list-item"
+                         :thumb="`https://pokepast.es/img/pokemon/${inter(item.id)}-0.png`"
+                         @tap.prevent.stop="click(item)"
                          thumb-size="lg" :rightText="'#'+item.id"></uni-list-item>
 
         </template>
 
-        <uni-load-more :status="status"/>
+        <!--        <uni-load-more :status="status"/>-->
 
       </uni-list>
-    </uni-list>
-
-    <uni-data-picker @popupclosed="popupclosed" v-model="item" :localdata="items" popup-title="请选择"
-                     @change="onchange" ref="picker"
-                     :class="!show?'list-data-picker':''"></uni-data-picker>
+    </view>
 
 
   </view>
@@ -38,10 +55,24 @@
 
 <script>
 import {getList} from "../../server";
+import slider from "../../components/slider.vue";
 
 export default {
+  onShareAppMessage: function () {
+    return {
+      title: '宝可梦列表',
+      path: '/pages/list/list'
+    }
+  },
+  components: {slider},
   data() {
     return {
+      menu: [{
+        title: '全国图鉴',
+      }, {
+        title: '帕底亚',
+      }],
+      searchShow: false,
       show: false,
       item: '0',
       items: [{
@@ -77,7 +108,16 @@ export default {
       }],
       status: 'loading',
       list: [],
-      data: [],
+      data: [{
+        id: 1,
+        name: '小火龙',
+      }, {
+        id: 2,
+        name: '杰尼龟',
+      }, {
+        id: 3,
+        name: '妙蛙花',
+      }],
       rawData: [],
       index: 0,
       searchValue: ''
@@ -90,6 +130,12 @@ export default {
     }
   },
   methods: {
+    click(item) {
+      console.log(item)
+      uni.navigateTo({
+        url: '/pages/info/info?id=' + item.id
+      })
+    },
     blur() {
     },
     popupclosed() {
@@ -130,10 +176,19 @@ export default {
     focus() {
     },
     input() {
+      if (this.searchValue) {
+        this.list = this.paginateArray(this.rawData.filter(item => item.name.indexOf(this.searchValue) !== -1), 15);
+        this.data = this.list[0];
+        this.index = 0;
+      } else {
+        this.list = this.paginateArray(this.rawData, 15);
+        this.data = this.list[0];
+        this.index = 0;
+      }
     },
     cancel() {
-      this.show = true;
-      this.$refs.picker.show();
+      // this.show = true;
+      // this.$refs.picker.show();
     },
     clear() {
     }
@@ -150,21 +205,76 @@ export default {
 </script>
 
 <style lang="scss">
-.search-bar {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  z-index: 99;
-  background-color: #fff;
+.ne-list {
+  min-height: 100vh;
+  background-color: #f5f5f5;
+
+  .list-main {
+    padding: 0 24rpx;
+
+    .list-item {
+      margin-bottom: 24rpx;
+      border-radius: 20rpx;
+      overflow: hidden;
+    }
+
+    .uni-list {
+      background-color: #f5f5f5;
+    }
+
+    .uni-list--lg {
+      width: 130rpx;
+      height: 130rpx;
+    }
+
+    .uni-list--border {
+      display: none;
+    }
+
+    .uni-list-item__container {
+      padding: 12rpx !important;
+    }
+  }
+
+
+  .search-bar {
+    background-color: #ffffff;
+  }
+
+  .ne-top {
+
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 56px;
+    z-index: 99;
+    background-color: #f5f5f5;
+
+    .icon {
+      position: absolute;
+      width: 26px;
+      height: 26px;
+      top: 15px;
+      left: 20px;
+
+      &.menu {
+        right: 20px;
+        left: auto;
+      }
+    }
+
+  }
+
+  .list-data-picker {
+    display: none !important;
+  }
+
+  .popup-height {
+    height: 100vh;
+    width: 200px;
+  }
+
 }
 
-.list-data-picker {
-  display: none !important;
-}
-
-.popup-height {
-  height: 100vh;
-  width: 200px;
-}
 </style>
