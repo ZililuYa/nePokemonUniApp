@@ -70,3 +70,88 @@
 .bg-18 {
     background-color: #FFAAFF !important;
 }
+
+
+.sprite-type-1 {
+    background-position: 0 0
+}
+
+.sprite-type-2 {
+    background-position: 0 -40rpx
+}
+
+.sprite-type-3 {
+    background-position: 0 -80rpx
+}
+
+.sprite-type-4 {
+    background-position: 0 -120rpx
+}
+
+.sprite-type-5 {
+    background-position: 0 -160rpx
+}
+
+.sprite-type-6 {
+    background-position: 0 -200rpx
+}
+
+.sprite-type-7 {
+    background-position: 0 -240rpx
+}
+
+.sprite-type-8 {
+    background-position: 0 -280rpx
+}
+
+.sprite-type-9 {
+    background-position: 0 -320rpx
+}
+
+.sprite-type-10 {
+    background-position: 0 -360rpx
+}
+
+.sprite-type-11 {
+    background-position: 0 -400rpx
+}
+
+.sprite-type-12 {
+    background-position: 0 -440rpx
+}
+
+.sprite-type-13 {
+    background-position: 0 -480rpx
+}
+
+.sprite-type-14 {
+    background-position: 0 -520rpx
+}
+
+.sprite-type-15 {
+    background-position: 0 -560rpx
+}
+
+.sprite-type-16 {
+    background-position: 0 -600rpx
+}
+
+.sprite-type-17 {
+    background-position: 0 -640rpx
+}
+
+.sprite-type-18 {
+    background-position: 0 -680rpx
+}
+
+.sprite-category-19 {
+    background-position: 0 -720rpx
+}
+
+.sprite-category-20 {
+    background-position: 0 -760rpx
+}
+
+.sprite-category-21 {
+    background-position: 0 -800rpx
+}

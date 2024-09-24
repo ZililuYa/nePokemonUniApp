@@ -37,10 +37,26 @@
 
         <template v-for="item in data">
 
-          <uni-list-item :key="item.id" :title="item.name" class="list-item"
+          <uni-list-item :key="item.id" class="list-item"
                          :thumb="`https://pokepast.es/img/pokemon/${inter(item.id)}-0.png`"
                          @tap.prevent.stop="click(item)"
-                         thumb-size="lg" :rightText="'#'+item.id"></uni-list-item>
+                         direction="row"
+                         thumb-size="lg">
+
+
+            <template v-slot:body>
+              <text>{{ item.name }}</text>
+            </template>
+
+            <template v-slot:footer>
+              <view class="tag-list">
+                <attributeTag name="岩石" class="tag"></attributeTag>
+                <attributeTag name="超能力" class="tag"></attributeTag>
+              </view>
+            </template>
+
+
+          </uni-list-item>
 
         </template>
 
@@ -56,6 +72,7 @@
 <script>
 import {getList} from "../../server";
 import slider from "../../components/slider.vue";
+import attributeTag from "../../components/attributeTag.vue";
 
 export default {
   onShareAppMessage: function () {
@@ -64,7 +81,7 @@ export default {
       path: '/pages/list/list'
     }
   },
-  components: {slider},
+  components: {slider, attributeTag},
   data() {
     return {
       menu: [{
@@ -131,10 +148,10 @@ export default {
   },
   methods: {
     click(item) {
-      console.log(item)
-      uni.navigateTo({
-        url: '/pages/info/info?id=' + item.id
-      })
+      // console.log(item)
+      // uni.navigateTo({
+      //   url: '/pages/info/info?id=' + item.id
+      // })
     },
     blur() {
     },
@@ -209,11 +226,22 @@ export default {
   min-height: 100vh;
   background-color: #f5f5f5;
 
+  .tag-list {
+    width: 160rpx;
+    margin-left: auto;
+    margin-right: 12rpx;
+  }
+
+  .tag {
+    margin-top: 10rpx;
+    display: inline-block;
+  }
+
   .list-main {
     padding: 0 24rpx;
 
     .list-item {
-      margin-bottom: 24rpx;
+      margin-bottom: 18rpx;
       border-radius: 20rpx;
       overflow: hidden;
     }

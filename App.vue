@@ -23,4 +23,11 @@ page {
   //background-color: #f5f5f5;
 }
 
+.fr {
+  float: right;
+}
+
+.fl {
+  float: left;
+}
 </style>
