@@ -42,3 +42,26 @@ export function attributeToId(attribute) {
             return attribute;
     }
 }
+
+
+export const century = [{
+    text: "第一世代", value: 1,
+}, {
+    text: "第二世代", value: 2,
+}, {
+    text: "第三世代", value: 3,
+}, {
+    text: "第四世代", value: 4,
+}, {
+    text: "第五世代", value: 5,
+}, {
+    text: "第六世代", value: 6,
+}, {
+    text: "第七世代", value: 7,
+}, {
+    text: "第八世代", value: 8,
+}, {
+    text: "第九世代", value: 9,
+}]
+
+export const attributes = ['一般', '格斗', '飞行', '毒', '地面', '岩石', '虫', '幽灵', '钢', '火', '水', '草', '电', '超能力', '冰', '龙', '恶', '妖精'];

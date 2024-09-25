@@ -1,123 +1,21 @@
 <template>
-  <view class="info">
-    <!--    <view class="banner">-->
-    <!--      <swiper class="swiper" :indicator-dots="false" :autoplay="false"-->
-    <!--              :previous-margin="rpx" active-class="active" @change="change"-->
-    <!--              :next-margin="rpx">-->
-    <!--        <swiper-item>-->
-    <!--          <image class="image" :class="current===0?'':'image-hide'"-->
-    <!--                 :src="`https://pokepast.es/img/pokemon/${inter(id)}-0.png`"></image>-->
-    <!--        </swiper-item>-->
-    <!--        <swiper-item v-if="data.form2">-->
-    <!--          <image class="image" :class="current===1?'':'image-hide'"-->
-    <!--                 :src="`https://pokepast.es/img/pokemon/${inter(id)}-1.png`"></image>-->
-    <!--        </swiper-item>-->
-    <!--        <swiper-item v-if="data.form3">-->
-    <!--          <image class="image" :class="current===2?'':'image-hide'"-->
-    <!--                 :src="`https://pokepast.es/img/pokemon/${inter(id)}-2.png`"></image>-->
-    <!--        </swiper-item>-->
-    <!--        <swiper-item v-if="data.form4">-->
-    <!--          <image class="image" :class="current===3?'':'image-hide'"-->
-    <!--                 :src="`https://pokepast.es/img/pokemon/${inter(id)}-3.png`"></image>-->
-    <!--        </swiper-item>-->
-    <!--      </swiper>-->
-    <!--    </view>-->
-
-    <!--    <view class="uni-padding-wrap">-->
-    <!--      <uni-segmented-control :current="sc" :values="items" :style-type="'button'"-->
-    <!--                             :active-color="activeColor" @clickItem="onClickItem"/>-->
-    <!--    </view>-->
-
-    <!--    <view v-if="sc === 0 && data.name">-->
-
-    <!--      <uni-list :border="true">-->
-
-    <!--        <uni-list-item :title="'#' + id" rightText="编号"></uni-list-item>-->
-
-    <!--        <uni-list-item :title="data.name || ''" rightText="名称" v-if="current === 0"></uni-list-item>-->
-    <!--        <uni-list-item :title="data.form2 || ''" rightText="名称" v-if="current === 1"></uni-list-item>-->
-    <!--        <uni-list-item :title="data.form3 || ''" rightText="名称" v-if="current === 2"></uni-list-item>-->
-    <!--        <uni-list-item :title="data.form4 || ''" rightText="名称" v-if="current === 3"></uni-list-item>-->
+  <view class="ne-info">
 
 
-    <!--        <uni-list-item :title="data.ability1 || ''" rightText="特性" v-if="current === 0"></uni-list-item>-->
-    <!--        <uni-list-item :title="data.ability2 || ''" rightText="特性"-->
-    <!--                       v-if="current === 0 && data.ability2"></uni-list-item>-->
-    <!--        <uni-list-item :title="data.abilityd || ''" rightText="隐藏特性"-->
-    <!--                       v-if="current === 0 && data.abilityd"></uni-list-item>-->
+    <uni-list :border="false">
+      <uni-list-item :border="false" v-for="item in data" :thumb="item.img" :title="item.title" thumb-size="lg"
+                     :class="item.to?'ok':'no'"
+                     @tap="to(item)">
 
+      </uni-list-item>
+    </uni-list>
+    <uni-list :border="false">
+      <uni-list-item :border="false" v-for="item in other" :thumb="item.img" :title="item.title" thumb-size="lg"
+                     :class="item.to?'ok':'no'"
+                     @tap="to(item)">
 
-    <!--        <uni-list-item :title="data['ability1-2'] || data.ability1 || ''" rightText="特性"-->
-    <!--                       v-if="current === 1"></uni-list-item>-->
-    <!--        <uni-list-item :title="data['ability1-3'] || data.ability1 || ''" rightText="特性"-->
-    <!--                       v-if="current === 2"></uni-list-item>-->
-    <!--        <uni-list-item :title="data['ability1-4'] || data.ability1 || ''" rightText="特性"-->
-    <!--                       v-if="current === 3"></uni-list-item>-->
-
-
-    <!--        <uni-list-item rightText="属性">-->
-
-    <!--          <template v-slot:header>-->
-    <!--            <view style="display: flex">-->
-    <!--              <view class="type" :class="'bg-' + attributeToId(data.type1)">{{ data.type1 }}</view>-->
-    <!--              <view class="type" :class="'bg-' + attributeToId(data.type2)" v-if="data.type2"-->
-    <!--                    style="margin-left: 10px">{{ data.type2 }}-->
-    <!--              </view>-->
-    <!--            </view>-->
-    <!--          </template>-->
-
-    <!--        </uni-list-item>-->
-
-
-    <!--        <uni-list-item :title="data.species+'宝可梦'" rightText="分类"></uni-list-item>-->
-
-    <!--        <uni-list-item rightText="蛋组">-->
-
-    <!--          <template v-slot:header>-->
-    <!--            <view style="display: flex">-->
-    <!--              <text class="egg">{{ data.egggroup1 || '未发现' }}</text>-->
-    <!--              <text class="egg" style="margin-left: 10px" v-if="data.egggroup2">{{ data.egggroup2 }}</text>-->
-    <!--            </view>-->
-    <!--          </template>-->
-
-    <!--        </uni-list-item>-->
-
-    <!--        <uni-list-item :title="data.catchrate || ''" rightText="捕获率"></uni-list-item>-->
-
-    <!--        <uni-list-item :title="data.height || ''" rightText="身高(m)"></uni-list-item>-->
-
-    <!--        <uni-list-item :title="data.weight || ''" rightText="体重(kg)"></uni-list-item>-->
-
-    <!--        <uni-list-item :title="data.lv100exp || ''" rightText="100级时经验值"></uni-list-item>-->
-    <!--        &lt;!&ndash;        evat: "0"&ndash;&gt;-->
-    <!--        &lt;!&ndash;        evde: "0"&ndash;&gt;-->
-    <!--        &lt;!&ndash;        evhp: "0"&ndash;&gt;-->
-    <!--        &lt;!&ndash;        evsa: "3"&ndash;&gt;-->
-    <!--        &lt;!&ndash;        evsd: "0"&ndash;&gt;-->
-    <!--        &lt;!&ndash;        evsp: "0"&ndash;&gt;-->
-    <!--        <uni-list-item v-if="data.evhp && data.evhp !== '0'" :title="data.evhp || ''"-->
-    <!--                       rightText="HP(取得基础点数)"></uni-list-item>-->
-    <!--        <uni-list-item v-if="data.evsa && data.evsa !== '0'" :title="data.evsa || ''"-->
-    <!--                       rightText="特攻(取得基础点数)"></uni-list-item>-->
-    <!--        <uni-list-item v-if="data.evsd && data.evsd !== '0'" :title="data.evsd || ''"-->
-    <!--                       rightText="特防(取得基础点数)"></uni-list-item>-->
-    <!--        <uni-list-item v-if="data.evsp && data.evsp !== '0'" :title="data.evsp || ''"-->
-    <!--                       rightText="速度(取得基础点数)"></uni-list-item>-->
-    <!--        <uni-list-item v-if="data.evde && data.evde !== '0'" :title="data.evde || ''"-->
-    <!--                       rightText="防御(取得基础点数)"></uni-list-item>-->
-    <!--        <uni-list-item v-if="data.evat && data.evat !== '0'" :title="data.evat || ''"-->
-    <!--                       rightText="攻击(取得基础点数)"></uni-list-item>-->
-
-
-    <!--      </uni-list>-->
-
-    <!--      <uni-section title="介绍" type="line" padding>-->
-    <!--        <view class="description">-->
-    <!--          {{ data.description || '暂无介绍' }}-->
-    <!--        </view>-->
-    <!--      </uni-section>-->
-
-    <!--    </view>-->
+      </uni-list-item>
+    </uni-list>
 
   </view>
 </template>
@@ -129,13 +27,62 @@ import {attributeToId} from "../../utils";
 export default {
   data() {
     return {
+      data: [{
+        title: '招式列表',
+        img: '/static/icon/yb.png'
+      }, {
+        title: '定点教学 - 普通招式',
+        img: '/static/icon/yb.png'
+      }, {
+        title: '定点教学 - 特殊招式',
+        img: '/static/icon/yb.png'
+      }, {
+        title: '招式优先度',
+        img: '/static/icon/yb.png'
+      }],
+      other: [{
+        title: '道具列表',
+        img: '/static/icon/Leftovers.png'
+      }, {
+        title: '特性列表',
+        img: '/static/icon/AbilityPatch.png'
+      }, {
+        title: '蛋组',
+        img: '/static/icon/egg.png'
+      }, {
+        title: '属性相克表',
+        img: '/static/icon/LuckyPunch.png'
+      }, {
+        title: '性格修正',
+        img: '/static/icon/Mint.png'
+      }, {
+        title: '训练家',
+        img: '/static/icon/ch.png'
+      }, {
+        title: '速度线',
+        img: '/static/icon/ChoiceScarf.png'
+      }, {
+        title: '觉醒力量详情',
+        img: '/static/icon/yb.png'
+      }, {
+        title: '异常状态列表',
+        img: '/static/icon/FlameOrb.png'
+      }, {
+        title: '场地列表',
+        img: '/static/icon/TerrainExtender.png'
+      }, {
+        title: '天气列表',
+        img: '/static/icon/HeatRock.png'
+      }, {
+        title: '能力等级说明',
+        img: '/static/icon/Leek.png'
+      }],
       sc: 0,
       items: ['基本信息', '游戏中', '招式列表'],
       id: '',
       current: 0,
       activeColor: '#2979ff',
       rpx: '175rpx',
-      data: {}
     }
   },
   onLoad(option) {
@@ -143,6 +90,16 @@ export default {
     this.id = option.id
   },
   methods: {
+    to(item) {
+      if (!item.to)
+        return uni.showToast({
+          title: item.text || '功能在来的路上~☺️',
+          icon: 'none'
+        })
+      uni.navigateTo({
+        url: item.to
+      })
+    },
     attributeToId,
     onClickItem() {
     },
@@ -165,7 +122,28 @@ export default {
 </script>
 
 <style lang="scss">
-.info {
+.ne-info {
+  min-height: 100vh;
+  margin-bottom: 24rpx;
+  padding: 0 24rpx 24rpx;
+  background-color: #f5f5f5;
+  overflow: hidden;
+
+  .no {
+    filter: grayscale(100%);
+  }
+
+  .uni-list {
+    border-radius: 20rpx;
+    margin-top: 24rpx;
+    background-color: #fff;
+    overflow: hidden;
+  }
+
+  .uni-list-item__content-title {
+    font-size: 30rpx;
+  }
+
   .egg {
     color: $uni-primary;
     text-decoration: underline;

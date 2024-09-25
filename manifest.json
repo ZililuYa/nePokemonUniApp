@@ -42,7 +42,18 @@
             },
             "ios" : {},
             /* ios打包配置 */
-            "sdkConfigs" : {}
+            "sdkConfigs" : {
+                "oauth" : {
+                    "qq" : {
+                        "appid" : "",
+                        "UniversalLinks" : ""
+                    },
+                    "weixin" : {
+                        "appid" : "",
+                        "UniversalLinks" : ""
+                    }
+                }
+            }
         }
     },
     /* SDK配置 */
@@ -55,5 +66,8 @@
         },
         "usingComponents" : true
     },
-    "vueVersion" : "2"
+    "vueVersion" : "2",
+    "mp-qq" : {
+        "appid" : "1109772164"
+    }
 }

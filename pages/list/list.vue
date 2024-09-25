@@ -4,17 +4,17 @@
     <view class="ne-top">
 
 
-      <uni-search-bar class="search-bar" v-if="searchShow" :focus="true" placeholder="搜索全国图鉴" @confirm="search"
+      <uni-search-bar class="search-bar" v-if="searchShow" :focus="true" placeholder="搜索全国图鉴"
                       v-model="searchValue"
                       @blur="blur" @focus="focus"
-                      @input="input"
-                      @cancel="searchShow = false" @clear="clear">
+                      @confirm="input"
+                      @cancel="cancel" @clear="clear">
       </uni-search-bar>
 
 
       <image src="@/static/search.png" class="icon search" v-if="!searchShow"
              @tap.prevent.stop="searchShow = true"></image>
-      <image src="@/static/menu.png" class="icon menu" v-if="!searchShow"></image>
+      <image src="@/static/menu.png" class="icon menu" v-if="!searchShow" @tap="open"></image>
 
 
       <view style="display: flex;justify-content: center;" v-if="!searchShow">
@@ -45,13 +45,22 @@
 
 
             <template v-slot:body>
-              <text>{{ item.name }}</text>
+              <view style="font-size: 26rpx;margin-top: 10rpx">
+                {{ item.cnName }}
+                <text style="font-size: 20rpx;color: #999;margin-left: 20rpx">{{ item.jpName }}</text>
+              </view>
+              <view style="font-size: 20rpx;color: #999;margin-top: 10rpx">
+                {{ item.no }}
+              </view>
+              <view style="font-size: 20rpx;color: #999;margin-top: 10rpx">
+                {{ item.features }}
+              </view>
             </template>
 
             <template v-slot:footer>
               <view class="tag-list">
-                <attributeTag name="岩石" class="tag"></attributeTag>
-                <attributeTag name="超能力" class="tag"></attributeTag>
+                <attributeTag :name="item.attributes[0].name" class="tag" v-if="item.attributes[0]"></attributeTag>
+                <attributeTag :name="item.attributes[1].name" class="tag" v-if="item.attributes[1]"></attributeTag>
               </view>
             </template>
 
@@ -60,11 +69,41 @@
 
         </template>
 
-        <!--        <uni-load-more :status="status"/>-->
+        <uni-load-more :status="status"/>
 
       </uni-list>
     </view>
 
+    <view>
+      <uni-popup ref="popup" type="right" border-radius="10px 10px 0 0">
+
+
+        <view class="popup-main">
+          <uni-section class="mb-10" title="属性" type="line">
+            <view style="overflow: hidden">
+              <view v-for="item in attributes" :class="'attributes '+(attributesValue===item?'':'grayscale')"
+                    @tap="attributeSet(item)">
+                <attributeTag :name="item" class="tag"></attributeTag>
+              </view>
+
+            </view>
+          </uni-section>
+          <uni-section class="mb-10" title="世代" type="line">
+            <view style="overflow: hidden">
+              <view v-for="item in century" :text="item.text" class="pm-li"
+                    :class="{active: item.value === centuryValue}" @tap="centurySet(item.value)">
+                {{ item.text }}
+              </view>
+            </view>
+          </uni-section>
+
+          <view class="ne-btn" @tap="refresh">
+            <text>重 置</text>
+          </view>
+        </view>
+
+      </uni-popup>
+    </view>
 
   </view>
 </template>
@@ -73,6 +112,7 @@
 import {getList} from "../../server";
 import slider from "../../components/slider.vue";
 import attributeTag from "../../components/attributeTag.vue";
+import {attributes, century} from "../../utils";
 
 export default {
   onShareAppMessage: function () {
@@ -92,61 +132,47 @@ export default {
       searchShow: false,
       show: false,
       item: '0',
-      items: [{
-        text: "全部",
-        value: "0",
-      }, {
-        text: "第一世代",
-        value: "1|151",
-      }, {
-        text: "第二世代",
-        value: "152|251",
-      }, {
-        text: "第三世代",
-        value: "252|386",
-      }, {
-        text: "第四世代",
-        value: "387|493",
-      }, {
-        text: "第五世代",
-        value: "494|649",
-      }, {
-        text: "第六世代",
-        value: "650|721",
-      }, {
-        text: "第七世代",
-        value: "722|810",
-      }, {
-        text: "第八世代",
-        value: "811|905",
-      }, {
-        text: "第九世代",
-        value: "906|1026",
-      }],
+      attributes,
+      attributesValue: '',
+      century,
+      centuryValue: '',
       status: 'loading',
       list: [],
-      data: [{
-        id: 1,
-        name: '小火龙',
-      }, {
-        id: 2,
-        name: '杰尼龟',
-      }, {
-        id: 3,
-        name: '妙蛙花',
-      }],
+      data: [],
+      page: 1,
+      pageSize: 15,
       rawData: [],
       index: 0,
       searchValue: ''
     }
   },
   onReachBottom() {
+    if (this.status === 'no-more') return;
     this.next();
-    if (this.index >= this.list.length) {
-      this.status = 'no-more';
-    }
   },
   methods: {
+    refresh() {
+      this.$refs.popup.close();
+      this.attributesValue = '';
+      this.centuryValue = '';
+      this.page = 1;
+      this.getData();
+    },
+    attributeSet(value) {
+      this.$refs.popup.close();
+      this.attributesValue = value === this.attributesValue ? '' : value;
+      this.page = 1;
+      this.getData();
+    },
+    centurySet(value) {
+      this.$refs.popup.close();
+      this.centuryValue = value === this.centuryValue ? '' : value;
+      this.page = 1;
+      this.getData();
+    },
+    open() {
+      this.$refs.popup.open('right')
+    },
     click(item) {
       // console.log(item)
       // uni.navigateTo({
@@ -179,44 +205,52 @@ export default {
       return result;
     },
     inter(i) {
+      if (!i) return i;
       return parseInt(i)
     },
     next() {
-      this.index++;
-      if (this.index >= this.list.length) {
-        return;
-      }
-      this.data = this.data.concat(this.list[this.index]);
-    },
-    search() {
+      this.page++;
+      this.getData();
     },
     focus() {
     },
     input() {
       if (this.searchValue) {
-        this.list = this.paginateArray(this.rawData.filter(item => item.name.indexOf(this.searchValue) !== -1), 15);
-        this.data = this.list[0];
-        this.index = 0;
-      } else {
-        this.list = this.paginateArray(this.rawData, 15);
-        this.data = this.list[0];
-        this.index = 0;
+        this.data = [];
+        this.page = 1;
+        this.getData();
       }
     },
     cancel() {
-      // this.show = true;
-      // this.$refs.picker.show();
+      this.searchShow = false
+      this.searchValue = '';
+      this.data = [];
+      this.page = 1;
+      this.getData();
     },
     clear() {
+      this.data = [];
+      this.page = 1;
+      this.getData();
+    },
+    getData() {
+      this.status = 'loading';
+      getList({
+        page: this.page,
+        perPage: this.pageSize,
+        name: this.searchValue || '',
+        numb: this.centuryValue || '',
+        attr: this.attributesValue || ''
+      }).then(res => {
+        this.data = this.data.concat(res.data.result)
+        if (res.data.result.length < this.pageSize) {
+          this.status = 'no-more';
+        }
+      });
     }
   },
   mounted() {
-    getList().then(res => {
-      console.log(res)
-      this.rawData = res.data;
-      this.list = this.paginateArray(res.data, 15);
-      this.data = this.list[0];
-    });
+    this.getData();
   }
 }
 </script>
@@ -225,6 +259,67 @@ export default {
 .ne-list {
   min-height: 100vh;
   background-color: #f5f5f5;
+
+  .ne-btn {
+    width: 490rpx;
+    margin-left: 30rpx;
+    border: 2rpx solid $uni-primary;
+    background-color: $uni-primary;
+    color: #ffffff;
+    margin-top: 30rpx;
+    text-align: center;
+    border-radius: 15rpx;
+    height: 70rpx;
+    line-height: 68rpx;
+  }
+
+  .uniui-refreshempty {
+    color: #fff !important;
+    margin-right: 20rpx;
+  }
+
+  .popup-main {
+    background-color: #ffffff;
+    width: 550rpx;
+    position: relative;
+    height: 100%;
+
+    .uni-section__content-title {
+      font-size: 32rpx !important;
+    }
+
+    .attributes {
+      width: 160rpx;
+      margin-bottom: 30rpx;
+      margin-left: 17.5rpx;
+      float: left;
+
+      &.grayscale {
+        filter: grayscale(100%);
+      }
+    }
+
+    .pm-li {
+      width: 230rpx;
+      box-sizing: border-box;
+      border: 1rpx solid #e5e5e5;
+      float: left;
+      text-align: center;
+      height: 60rpx;
+      line-height: 58rpx;
+      font-size: 28rpx;
+      color: #909399;
+      margin-left: 30rpx;
+      margin-bottom: 30rpx;
+      border-radius: 15rpx;
+
+      &.active {
+        border: 1rpx solid $uni-primary;
+        background-color: $uni-primary;
+        color: #ffffff;
+      }
+    }
+  }
 
   .tag-list {
     width: 160rpx;
