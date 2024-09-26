@@ -68,18 +68,18 @@ export default {
     },
     cancel() {
       this.searchValue = ''
+      this.confirm();
     },
     clear() {
-      this.searchValue = ''
     },
     confirm() {
-    },
-    search() {
-      this.$emit('search', this.searchValue)
+      this.page = 1;
+      this.data = [];
+      this.getData();
     },
     getData() {
       this.status = 'loading';
-      getSkillList({page: this.page, per_page: this.pageSize}).then(res => {
+      getSkillList({page: this.page, per_page: this.pageSize, name: this.searchValue}).then(res => {
         console.log(res)
         this.data = this.data.concat(res.data.result);
         if (res.data.result.length < this.pageSize) {
@@ -121,9 +121,11 @@ export default {
     padding-top: 15rpx;
 
     image {
-      height: 50rpx;
-      width: 80rpx;
+      height: 40rpx;
+      width: 70rpx;
       margin-left: 20rpx;
+      display: inline-block;
+      transform: translateY(5rpx);
     }
   }
 

@@ -26,7 +26,7 @@
 export default {
   data() {
     return {
-      appVersion: uni.getSystemInfoSync().appVersion,
+      appVersion: '',
       data: [{
         title: '清除缓存',
         img: '/static/icon/Ball.png',
@@ -60,6 +60,7 @@ export default {
   onLoad() {
   },
   mounted() {
+    this.appVersion = uni.getSystemInfoSync().appVersion;
   },
 }
 </script>

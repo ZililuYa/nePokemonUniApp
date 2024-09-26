@@ -82,6 +82,7 @@
           <uni-section class="mb-10" title="属性" type="line">
             <view style="overflow: hidden">
               <view v-for="item in attributes" :class="'attributes '+(attributesValue===item?'':'grayscale')"
+                    :key="item"
                     @tap="attributeSet(item)">
                 <attributeTag :name="item" class="tag"></attributeTag>
               </view>
@@ -90,7 +91,7 @@
           </uni-section>
           <uni-section class="mb-10" title="世代" type="line">
             <view style="overflow: hidden">
-              <view v-for="item in century" :text="item.text" class="pm-li"
+              <view v-for="item in century" :text="item.text" class="pm-li" :key="item"
                     :class="{active: item.value === centuryValue}" @tap="centurySet(item.value)">
                 {{ item.text }}
               </view>

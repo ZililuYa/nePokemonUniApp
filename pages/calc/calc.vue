@@ -2,6 +2,7 @@
   <view class="ne-calc">
     <uni-list :border="false">
       <uni-list-item :border="false" v-for="item in data" :thumb="item.img" :title="item.title" thumb-size="lg"
+                     :key="item.title"
                      :class="item.to?'ok':'no'"
                      @tap="to(item)">
 
@@ -9,6 +10,7 @@
     </uni-list>
     <uni-list :border="false">
       <uni-list-item :border="false" v-for="item in other" :thumb="item.img" :title="item.title" thumb-size="lg"
+                     :key="item.title"
                      :class="item.to?'ok':'no'"
                      @tap="to(item)">
 
@@ -24,7 +26,6 @@ export default {
       data: [{
         title: '能力值计算器',
         img: '/static/icon/GoldBottleCap.png',
-        to: '/pages/list/list'
       }, {
         title: '个体值计算器',
         img: '/static/icon/BottleCap.png',
