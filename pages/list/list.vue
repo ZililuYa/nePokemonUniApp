@@ -127,7 +127,7 @@ export default {
       menu: [{
         title: '全国图鉴',
       }, {
-        title: '帕底亚',
+        title: '朱／紫',
       }],
       searchShow: false,
       show: false,
@@ -151,24 +151,25 @@ export default {
     this.next();
   },
   methods: {
-    refresh() {
+    refreshData() {
       this.$refs.popup.close();
+      this.page = 1;
+      this.data = [];
+      this.status = 'loading';
+      this.getData();
+    },
+    refresh() {
       this.attributesValue = '';
       this.centuryValue = '';
-      this.page = 1;
-      this.getData();
+      this.refreshData();
     },
     attributeSet(value) {
-      this.$refs.popup.close();
       this.attributesValue = value === this.attributesValue ? '' : value;
-      this.page = 1;
-      this.getData();
+      this.refreshData();
     },
     centurySet(value) {
-      this.$refs.popup.close();
       this.centuryValue = value === this.centuryValue ? '' : value;
-      this.page = 1;
-      this.getData();
+      this.refreshData();
     },
     open() {
       this.$refs.popup.open('right')
@@ -237,10 +238,10 @@ export default {
       this.status = 'loading';
       getList({
         page: this.page,
-        perPage: this.pageSize,
+        per_page: this.pageSize,
         name: this.searchValue || '',
         numb: this.centuryValue || '',
-        attr: this.attributesValue || ''
+        attribute: this.attributesValue || ''
       }).then(res => {
         this.data = this.data.concat(res.data.result)
         if (res.data.result.length < this.pageSize) {

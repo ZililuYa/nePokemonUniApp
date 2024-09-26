@@ -4,6 +4,7 @@
 
     <uni-list :border="false">
       <uni-list-item :border="false" v-for="item in data" :thumb="item.img" :title="item.title" thumb-size="lg"
+                     :key="item.title"
                      :class="item.to?'ok':'no'"
                      @tap="to(item)">
 
@@ -11,6 +12,7 @@
     </uni-list>
     <uni-list :border="false">
       <uni-list-item :border="false" v-for="item in other" :thumb="item.img" :title="item.title" thumb-size="lg"
+                     :key="item.title"
                      :class="item.to?'ok':'no'"
                      @tap="to(item)">
 
@@ -29,7 +31,8 @@ export default {
     return {
       data: [{
         title: '招式列表',
-        img: '/static/icon/yb.png'
+        img: '/static/icon/yb.png',
+        to: '/subPages/skills/skills'
       }, {
         title: '定点教学 - 普通招式',
         img: '/static/icon/yb.png'
@@ -112,11 +115,6 @@ export default {
     },
   },
   mounted() {
-    console.log(this.id)
-    getDetails({id: this.id}).then(res => {
-      console.log(res)
-      this.data = res.data;
-    })
   }
 }
 </script>
