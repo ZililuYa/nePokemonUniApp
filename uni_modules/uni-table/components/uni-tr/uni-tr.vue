@@ -1,6 +1,6 @@
 <template>
 	<!-- #ifdef H5 -->
-	<tr class="uni-table-tr">
+	<uni-tr class="uni-table-tr">
 		<th v-if="selection === 'selection' && ishead" class="checkbox" :class="{ 'tr-table--border': border }">
 			<table-checkbox :checked="checked" :indeterminate="indeterminate" :disabled="disabled"
 				@checkboxSelected="checkboxSelected"></table-checkbox>

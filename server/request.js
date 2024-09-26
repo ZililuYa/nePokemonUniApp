@@ -3,7 +3,8 @@ import CryptoJS from './crypto-js';
 
 // 设置 API 基础 URL (可根据环境切换)
 // const BASE_URL = 'http://192.168.1.2:3000'; // 你的 API 基础 URL
-const BASE_URL = 'http://47.98.174.14/front_api'; // 你的 API 基础 URL
+// const BASE_URL = 'http://47.98.174.14/front_api'; // 你的 API 基础 URL
+const BASE_URL = 'http://dex.fantasticmao.cn/front_api'; // 你的 API 基础 URL
 const platform = uni.getSystemInfoSync().uniPlatform;
 
 

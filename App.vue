@@ -58,4 +58,11 @@ page {
 .fl {
   float: left;
 }
+
+.mt-10 {
+  margin-top: 24rpx;
+}
+view {
+  box-sizing: border-box;
+}
 </style>

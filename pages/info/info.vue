@@ -45,10 +45,12 @@ export default {
       }],
       other: [{
         title: '道具列表',
-        img: '/static/icon/Leftovers.png'
+        img: '/static/icon/Leftovers.png',
+        to: '/subPages/items/items'
       }, {
         title: '特性列表',
-        img: '/static/icon/AbilityPatch.png'
+        img: '/static/icon/AbilityPatch.png',
+        to: '/subPages/ability/ability'
       }, {
         title: '蛋组',
         img: '/static/icon/egg.png'
@@ -58,7 +60,8 @@ export default {
         to: '/subPages/typeConflict/typeConflict'
       }, {
         title: '性格修正',
-        img: '/static/icon/Mint.png'
+        img: '/static/icon/Mint.png',
+        to: '/subPages/nature/nature'
       }, {
         title: '训练家',
         img: '/static/icon/ch.png'

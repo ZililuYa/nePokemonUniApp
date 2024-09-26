@@ -1,7 +1,7 @@
 <template>
 	<!-- #ifdef H5 -->
 	<thead class="uni-table-thead">
-		<tr class="uni-table-tr">
+		<uni-tr class="uni-table-tr">
 			<th :rowspan="rowspan" colspan="1" class="checkbox" :class="{ 'tr-table--border': border }">
 				<table-checkbox :indeterminate="indeterminate" :checked="checked"
 					@checkboxSelected="checkboxSelected"></table-checkbox>
