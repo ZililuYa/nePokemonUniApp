@@ -61,6 +61,15 @@
         "backgroundColorTop": "#f5f5f5",
         "backgroundColorBottom": "#f5f5f5"
       }
+    },
+    {
+      "path": "subPages/typeConflict/typeConflict",
+      "style": {
+        "navigationBarTitleText": "属性相克表",
+        "backgroundColor": "#f5f5f5",
+        "backgroundColorTop": "#f5f5f5",
+        "backgroundColorBottom": "#f5f5f5"
+      }
     }
   ],
   "tabBar": {

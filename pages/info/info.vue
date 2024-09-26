@@ -54,7 +54,8 @@ export default {
         img: '/static/icon/egg.png'
       }, {
         title: '属性相克表',
-        img: '/static/icon/LuckyPunch.png'
+        img: '/static/icon/LuckyPunch.png',
+        to: '/subPages/typeConflict/typeConflict'
       }, {
         title: '性格修正',
         img: '/static/icon/Mint.png'
