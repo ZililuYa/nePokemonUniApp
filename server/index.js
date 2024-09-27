@@ -12,6 +12,9 @@ export const getList = (params) => {
 export const getSkillList = (params) => {
     return get('/skill', params);
 };
+export const getSkill = (id,params) => {
+    return get('/skill/'+id, params);
+};
 
 export const getItemsList = (params) => {
     return get('/item', params);

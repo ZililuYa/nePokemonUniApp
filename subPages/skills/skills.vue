@@ -62,6 +62,11 @@ export default {
     this.next();
   },
   methods: {
+    to(item) {
+      uni.navigateTo({
+        url: '/subPages/skill/skill?id=' + item.id,
+      });
+    },
     next() {
       this.page++;
       this.getData();

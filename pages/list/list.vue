@@ -248,7 +248,8 @@ export default {
         per_page: this.pageSize,
         name: this.searchValue || '',
         numb: this.centuryValue || '',
-        attribute: this.attributesValue || ''
+        attribute: this.attributesValue || '',
+        generation: this.century.find(item => item.value === this.centuryValue)?.text || ''
       }).then(res => {
         this.data = this.data.concat(res.data.result)
         if (res.data.result.length < this.pageSize) {

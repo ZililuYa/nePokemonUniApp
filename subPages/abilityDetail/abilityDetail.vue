@@ -30,9 +30,18 @@
               <image class="img" :src="`https://pokepast.es/img/pokemon/${inter(item.id)}-0.png`"></image>
               <text>{{ item.cnName }}</text>
             </view>
-            <view class="v1" :class="{active: item.features[0] === data.cnName }">{{ item.features[0] || '-' }}</view>
-            <view class="v1" :class="{active: item.features[1] === data.cnName }">{{ item.features[1] || '-' }}</view>
-            <view class="v1" :class="{active: item.features[2] === data.cnName }">{{ item.features[2] || '-' }}</view>
+            <view class="v1" :class="{active: item.commonFeature[0] === data.cnName }">{{
+                item.commonFeature[0] || '-'
+              }}
+            </view>
+            <view class="v1" :class="{active: item.commonFeature[1] === data.cnName }">{{
+                item.commonFeature[1] || '-'
+              }}
+            </view>
+            <view class="v1" :class="{active: item.hideFeature === data.cnName }">{{
+                item.hideFeature || '-'
+              }}
+            </view>
           </view>
         </view>
       </uni-collapse-item>
@@ -68,7 +77,7 @@ export default {
         feature: res.data.cnName,
       }).then(res => {
         this.pokemon = res.data.result.map(r => {
-          r.features = r.features.split(',').map(s => s.trim());
+          r.commonFeature = r.commonFeature.split(',').map(s => s.trim());
           return r;
         });
       });
