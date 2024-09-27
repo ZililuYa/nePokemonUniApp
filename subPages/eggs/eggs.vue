@@ -114,18 +114,18 @@ export default {
     }
   }
 
+  .uni-collapse {
+    margin-top: 24rpx;
+    border-radius: 20rpx;
+    overflow: hidden;
+  }
+
 
   .title {
     margin-top: 24px;
     color: #000;
     font-weight: bold;
     font-size: 30rpx;
-  }
-
-  .uni-collapse {
-    margin-top: 24rpx;
-    border-radius: 20rpx;
-    overflow: hidden;
   }
 
   .content {

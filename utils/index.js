@@ -106,3 +106,8 @@ export const eggs = [{
 }, {text: "妖精", value: `这个蛋群的宝可梦大多原型基于可爱的小型动物和神话中的妖精。`}, {
     text: "植物", value: `这个蛋群的宝可梦大多原型基于植物和真菌，以及身上长有植物或真菌的动物。`
 }]
+
+export const inter = (i) => {
+    if (!i) return i;
+    return parseInt(i)
+}
