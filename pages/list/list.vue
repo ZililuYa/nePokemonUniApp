@@ -38,7 +38,7 @@
         <template v-for="item in data">
 
           <uni-list-item :key="item.id" class="list-item"
-                         :thumb="`https://pokepast.es/img/pokemon/${inter(item.id)}-0.png`"
+                         :thumb="thumb(item.id)"
                          @tap.prevent.stop="click(item)"
                          direction="row"
                          thumb-size="lg">
@@ -152,6 +152,12 @@ export default {
     this.next();
   },
   methods: {
+    thumb(id) {
+      // if (id <= 649) {
+      //   return `https://s1.52poke.com/assets/sprite/gen5/${id < 10 ? '00' + id : id < 100 ? '0' + id : id}s.gif`
+      // } else
+      return `https://pokepast.es/img/pokemon/${this.inter(id)}-0.png`
+    },
     refreshData() {
       this.$refs.popup.close();
       this.page = 1;

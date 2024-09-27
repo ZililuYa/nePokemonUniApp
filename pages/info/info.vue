@@ -53,7 +53,8 @@ export default {
         to: '/subPages/ability/ability'
       }, {
         title: '蛋组',
-        img: '/static/icon/egg.png'
+        img: '/static/icon/egg.png',
+        to: '/subPages/eggs/eggs'
       }, {
         title: '属性相克表',
         img: '/static/icon/LuckyPunch.png',
