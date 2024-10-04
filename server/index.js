@@ -42,4 +42,11 @@ export const getPokemonDetails = (id) => {
 };
 export const getPokemonDetailsForms = (id) => {
     return get('/pokemon/' + id+'/forms');
+}
+export const getPokemonDetailsUpgrades = (id) => {
+    return get('/pokemon/' + id+'/upgrades');
+};
+
+export const getPokemonDetailsSkills = (id) => {
+    return get('/pokemon/' + id+'/skills');
 };

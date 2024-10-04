@@ -9,8 +9,12 @@
     </view>
 
     <view class="content">
-      {{ data.type }}
-      <text class="fr">分类</text>
+      <view class="ne-li">
+        <view class="ne-right">
+          {{ data.type }}
+        </view>
+        <text class="ne-left">分类</text>
+      </view>
     </view>
 
     <view class="title" v-if="effect">

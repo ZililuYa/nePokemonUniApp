@@ -4,7 +4,8 @@
     <view class="sm-bj" :style="'width: '+width+'px;left:'+(index*width+2)+'px'"></view>
 
     <view :style="'width: '+(width * data.length)+'px'" class="sm-tabs">
-      <view :style="'width: '+width+'px'" v-for="(item, i) in data" :key="i" class="sm-t" @tap.prevent.stop="input(i)">
+      <view :style="'width: '+width+'px'" v-for="(item, i) in data" :key="i" class="sm-t" @tap.prevent.stop="input(i)"
+            :data-id="i">
         {{ item.title }}
       </view>
     </view>
@@ -18,13 +19,13 @@ export default {
       index: 0,
     };
   },
+  emits: ['change'],
   mounted() {
-    console.log(this.data, this.width);
   },
   methods: {
     input(e) {
       this.index = e;
-      this.$emit('input', e);
+      this.$emit('change', e);
     },
   },
   props: ['data', 'width', 'value'],

@@ -79,4 +79,31 @@ view {
 .center {
   text-align: center;
 }
+
+.ne-li {
+  overflow: hidden;
+
+  .ne-left {
+    font-size: 24rpx;
+    color: #999;
+    float: left;
+    line-height: 50rpx;
+    overflow: hidden;
+  }
+
+  .ne-right {
+    font-size: 28rpx;
+    color: #333;
+    float: right;
+    display: flex;
+    line-height: 50rpx;
+    align-items: center;
+    justify-content: right;
+  }
+}
+
+.ne-li + .ne-li {
+  margin-top: 24rpx;
+}
+
 </style>

@@ -8,45 +8,52 @@
       </view>
 
       <view class="content">
-        <view class="li">
-          <view style="display: flex" class="fl">
-            {{ data.cnName }}
-            <text style="font-size: 22rpx;margin-left: 24rpx;color: #999">{{ data.enName }} / {{ data.jpName }}</text>
+        <view class="ne-li">
+          <view class="ne-left">招式:</view>
+
+          <view class="ne-right">
+            {{ data.cnName }} / {{ data.enName }} / {{ data.jpName }}
           </view>
-          <view class="fr">招式</view>
         </view>
-        <view class="li">
 
-          <view class="right">
+        <view class="ne-li">
 
+          <view class="ne-left">属性:</view>
+          <view class="ne-right">
             <attributeTag :name="data.attributes.name" class="tag" v-if="data.attributes"></attributeTag>
-            <image src="/static/Physicalmove.png" alt="" v-if="data.categories.name==='物理'"/>
-            <image src="/static/Specialmove.png" alt="" v-if="data.categories.name==='特殊'"/>
-            <image src="/static/Statusmove.png" alt="" v-if="data.categories.name==='变化'"/>
-
+            <image src="/static/Physicalmove.png" class="image" alt="" v-if="data.categories.name==='物理'"/>
+            <image src="/static/Specialmove.png" class="image" alt="" v-if="data.categories.name==='特殊'"/>
+            <image src="/static/Statusmove.png" class="image" alt="" v-if="data.categories.name==='变化'"/>
           </view>
 
-          <view class="fr">属性</view>
         </view>
-        <view class="li">
-          <text class="power">{{ data.power }}</text>
-          <view class="fr">威力</view>
+        <view class="ne-li">
+          <view class="ne-left">威力:</view>
+          <text class="ne-right power">{{ data.power }}</text>
         </view>
-        <view class="li">
-          {{ data.hit === '-' ? '-' : data.hit + '%' }}
-          <view class="fr">命中</view>
+        <view class="ne-li">
+          <view class="ne-left">命中:</view>
+          <view class="ne-right">
+            {{ data.hit === '-' ? '-' : data.hit + '%' }}
+          </view>
         </view>
-        <view class="li">
-          {{ pp(data.pp) }}
-          <view class="fr">PP</view>
+        <view class="ne-li">
+          <view class="ne-left">PP:</view>
+          <view class="ne-right">
+            {{ pp(data.pp) }}
+          </view>
         </view>
-        <view class="li">
-          -
-          <view class="fr">优先度</view>
+        <view class="ne-li">
+          <view class="ne-left">优先度:</view>
+          <view class="ne-right">
+            -
+          </view>
         </view>
-        <view>
-          -
-          <view class="fr">目标</view>
+        <view class="ne-li">
+          <view class="ne-left">目标:</view>
+          <view class="ne-right">
+            -
+          </view>
         </view>
       </view>
 
@@ -210,17 +217,12 @@ export default {
     }
   }
 
-  .right {
-    display: flex;
-    float: left;
-
-    image {
-      height: 40rpx;
-      width: 70rpx;
-      margin-left: 20rpx;
-      display: inline-block;
-      transform: translateY(5rpx);
-    }
+  .image {
+    height: 40rpx;
+    width: 70rpx;
+    margin-left: 20rpx;
+    display: inline-block;
+    transform: translateY(5rpx);
   }
 
 

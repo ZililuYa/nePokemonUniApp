@@ -5,13 +5,15 @@
       <image class="icon menu" src="@/static/icon/collect.png"></image>
       <image class="icon" src="@/static/icon/copy.png"></image>
       <view style="display: flex;justify-content: center;">
-        <slider :data="menu" :width="90"></slider>
+        <slider :data="menu" :width="90" v-model="sliderIndex" ref="slider" @change="change"></slider>
       </view>
     </view>
 
-    <view class="ne-main">
-      <view class="ne-block flex-center">
-        <image class="img" :src="thumb()"></image>
+    <view v-if="!sliderIndex" class="ne-main">
+      <view class="ne-block flex-center" @tap="paint=!paint">
+        <image class="img" v-if="!paint" :src="thumb()"></image>
+        <image class="img" v-if="paint" :src="thumb(true)"></image>
+        <image class="img" v-if="paint" :src="thumb(true, true)"></image>
       </view>
 
       <view class="ne-block mt-10">
@@ -23,7 +25,7 @@
             {{ pokemon.cnName }} / {{ pokemon.jpName }} / {{ pokemon.enName }}
           </view>
         </view>
-        <view class="ne-li">
+        <view class="ne-li" v-if="id<650">
           <view class="ne-left" style="line-height: 100rpx">
             小图标:
           </view>
@@ -50,7 +52,9 @@
             特性:
           </view>
           <view class="ne-right">
-            <text style="color: #007aff" @tap="feature(pokemon.commonFeature[1])">{{ pokemon.commonFeature[1] }}</text>
+            <text style="color: #007aff" v-if="pokemon.commonFeature[1]" @tap="feature(pokemon.commonFeature[1])">
+              {{ pokemon.commonFeature[1] }}
+            </text>
             <view style="width: 24rpx"></view>
             <text style="color: #007aff" @tap="feature(pokemon.commonFeature[0])">{{ pokemon.commonFeature[0] }}</text>
           </view>
@@ -133,15 +137,197 @@
 
 
       <view class="ne-block mt-10">
+
+
+        <view class="ne-li">
+          <view class="ne-left">
+            蛋组:
+          </view>
+          <view class="ne-right">
+
+            <text style="color: #007aff" v-if="pokemon.eggGroup[1]" @tap="eggGroup(pokemon.eggGroup[1])">
+              {{ pokemon.eggGroup[1] }}
+            </text>
+            <view style="width: 24rpx"></view>
+            <text style="color: #007aff" @tap="eggGroup(pokemon.eggGroup[0])">{{ pokemon.eggGroup[0] }}</text>
+
+          </view>
+        </view>
+
+
+        <view class="ne-li">
+          <view class="ne-left">
+            分类:
+          </view>
+          <view class="ne-right">
+
+            {{ pokemon.category }}
+
+          </view>
+        </view>
+        <view class="ne-li">
+          <view class="ne-left">
+            身高:
+          </view>
+          <view class="ne-right">
+            {{ pokemon.height }}
+          </view>
+        </view>
+        <view class="ne-li">
+          <view class="ne-left">
+            体重:
+          </view>
+          <view class="ne-right">
+            {{ pokemon.weight }}
+          </view>
+        </view>
+        <view class="ne-li">
+          <view class="ne-left">
+            捕获度:
+          </view>
+          <view class="ne-right">
+            -
+          </view>
+        </view>
+        <view class="ne-li">
+          <view class="ne-left">
+            初始亲密度:
+          </view>
+          <view class="ne-right">
+            -
+          </view>
+        </view>
+        <view class="ne-li">
+          <view class="ne-left">
+            满级经验:
+          </view>
+          <view class="ne-right">
+            -
+          </view>
+        </view>
+        <view class="ne-li">
+          <view class="ne-left">
+            努力值:
+          </view>
+          <view class="ne-right">
+            -
+          </view>
+        </view>
+        <view class="ne-li">
+          <view class="ne-left">
+            性别比例:
+          </view>
+          <view class="ne-right">
+            {{ pokemon.gender }}
+          </view>
+        </view>
+
+
+      </view>
+
+
+      <view class="ne-block mt-10">
+        进化 - 待补充
       </view>
 
     </view>
+
+    <view class="ne-main" v-if="sliderIndex && skills && skills.length">
+      <uni-collapse ref="collapse">
+        <uni-collapse-item title="等级提升" :border="false">
+          <view style="padding-bottom: 24rpx;overflow: hidden">
+            <view class="th" v-for="item in skills.filter(r=>r.subTitle === '可学会的招式')" :key="item.name"
+                  @tap="to(item)">
+              <view class="v1">
+                <text>{{ item.grade }}</text>
+              </view>
+              <view class="v1" style="color: #007aff;">
+                {{ item.name }}
+              </view>
+              <view class="v1 v2">
+                <view style="width: 60rpx">{{ item.power }}</view>
+                <attributeTag :name="item.attribute" class="tag" v-if="item.attribute"></attributeTag>
+                <image src="@/static/Physicalmove.png" alt="" class="image" v-if="item.category==='物理'"/>
+                <image src="@/static/Specialmove.png" alt="" class="image" v-if="item.category==='特殊'"/>
+                <image src="@/static/Statusmove.png" alt="" class="image" v-if="item.category==='变化'"/>
+
+              </view>
+            </view>
+          </view>
+        </uni-collapse-item>
+      </uni-collapse>
+      <uni-collapse ref="collapse" class="mt-10">
+        <uni-collapse-item title="招式学习器" :border="false">
+          <view style="padding-bottom: 24rpx;overflow: hidden">
+            <view class="th" v-for="item in skills.filter(r=>r.subTitle === '能使用的招式学习器')" :key="item.name"
+                  @tap="to(item)">
+              <view class="v1">
+                <text>{{ item.grade }}</text>
+              </view>
+              <view class="v1" style="color: #007aff;">
+                {{ item.name }}
+              </view>
+              <view class="v1 v2">
+                <view style="width: 60rpx">{{ item.power }}</view>
+                <attributeTag :name="item.attribute" class="tag" v-if="item.attribute"></attributeTag>
+                <image src="@/static/Physicalmove.png" alt="" class="image" v-if="item.category==='物理'"/>
+                <image src="@/static/Specialmove.png" alt="" class="image" v-if="item.category==='特殊'"/>
+                <image src="@/static/Statusmove.png" alt="" class="image" v-if="item.category==='变化'"/>
+
+              </view>
+            </view>
+          </view>
+        </uni-collapse-item>
+      </uni-collapse>
+      <uni-collapse ref="collapse" class="mt-10">
+        <uni-collapse-item title="蛋招式" :border="false">
+          <view style="padding-bottom: 24rpx;overflow: hidden">
+            <view class="th" v-for="item in skills.filter(r=>r.subTitle === '蛋招式')" :key="item.name"
+                  @tap="to(item)">
+              <view class="v1">
+                <text>{{ item.grade }}</text>
+              </view>
+              <view class="v1" style="color: #007aff;">
+                {{ item.name }}
+              </view>
+              <view class="v1 v2">
+                <view style="width: 60rpx">{{ item.power }}</view>
+                <attributeTag :name="item.attribute" class="tag" v-if="item.attribute"></attributeTag>
+                <image src="@/static/Physicalmove.png" alt="" class="image" v-if="item.category==='物理'"/>
+                <image src="@/static/Specialmove.png" alt="" class="image" v-if="item.category==='特殊'"/>
+                <image src="@/static/Statusmove.png" alt="" class="image" v-if="item.category==='变化'"/>
+
+              </view>
+            </view>
+          </view>
+        </uni-collapse-item>
+      </uni-collapse>
+    </view>
+
+    <view style="width: 100%" v-if="platform==='mp-weixin'">
+      <!-- #ifdef MP-WEIXIN -->
+      <ad unit-id="adunit-4322de44f112529c"></ad>
+      <!-- #endif -->
+    </view>
+    <view style="width: 100%" v-if="platform==='mp-qq'">
+      <!-- #ifdef MP-WEIXIN -->
+      <ad unit-id="27d0bf0fca1897c57355f3e74e301bfc"></ad>
+      <!-- #endif -->
+    </view>
+
+    <view style="height: 50rpx"></view>
 
   </view>
 </template>
 
 <script>
-import {getAbilityList, getPokemonDetails, getPokemonDetailsForms} from '../../server/index';
+import {
+  getAbilityList,
+  getPokemonDetails,
+  getPokemonDetailsForms,
+  getPokemonDetailsSkills,
+  getPokemonDetailsUpgrades
+} from '../../server/index';
 import slider from "../../components/slider.vue";
 import attributeTag from "../../components/attributeTag.vue";
 import {attributes, attributeToId} from "../../utils";
@@ -149,7 +335,14 @@ import {attributes, attributeToId} from "../../utils";
 export default {
   components: {attributeTag, slider},
   data() {
+    const platform = uni.getSystemInfoSync().uniPlatform;
     return {
+      value: [],
+      platform,
+      sliderIndex: 0,
+      upgrades: [],
+      skills: [],
+      paint: false,
       attributes,
       showIndex: 0,
       back: false,
@@ -172,7 +365,30 @@ export default {
     };
   },
   methods: {
+    to(item) {
+      uni.navigateTo({
+        url: '/subPages/skill/skill?id=' + item.skillId,
+      });
+    },
+    change() {
+      this.sliderIndex = this.$refs.slider.index;
+
+      if (this.skills && this.skills.length) return;
+
+      console.log(this.$refs.slider.index);
+      uni.showLoading();
+      getPokemonDetailsSkills(this.id).then(res => {
+        // console.log(res);
+        this.skills = res.data
+        uni.hideLoading();
+      })
+    },
     attributeToId,
+    eggGroup(egg) {
+      uni.navigateTo({
+        url: '/subPages/eggs/eggs?egg=' + egg,
+      });
+    },
     feature(name) {
       if (name) {
 
@@ -204,7 +420,13 @@ export default {
       if (!i) return i;
       return parseInt(i)
     },
-    thumb(id) {
+    thumb(paint, dodge) {
+
+      if (paint) {
+
+        return dodge ? this.forms[this.showIndex].simage : this.forms[this.showIndex].pimage;
+      }
+
       if (this.forms && this.forms.length) return this.forms[this.showIndex].hdImage;
       // if (id <= 649) {
       //   return `https://s1.52poke.com/assets/sprite/gen5/${id < 10 ? '00' + id : id < 100 ? '0' + id : id}s.gif`
@@ -214,14 +436,17 @@ export default {
     async fetchPokemonDetails(id) {
       try {
         this.pokemon = (await getPokemonDetails(id)).data;
-        this.pokemon.commonFeature = this.pokemon.commonFeature.split(',').map(s => s.trim());
+        this.pokemon.commonFeature = this.pokemon.commonFeature.split(',').map(s => s.trim())
+        this.pokemon.eggGroup = this.pokemon.eggGroup.split(',').map(s => s.trim());
         console.log('Pokemon details:', this.pokemon);
 
         uni.setNavigationBarTitle({
           title: this.pokemon.cnName || this.pokemon.name
         });
 
-        this.forms = (await getPokemonDetailsForms(id)).data;
+        this.forms = (await getPokemonDetailsForms(id)).data
+        this.upgrades = (await getPokemonDetailsUpgrades(id)).data;
+
 
       } catch (error) {
         console.error('Failed to fetch Pokemon details:', error);
@@ -342,6 +567,57 @@ export default {
 
   .ne-main {
     padding: 0 24rpx 24rpx 24rpx;
+
+    .uni-collapse-item-border {
+      border: 0 !important;
+    }
+
+    .uni-collapse {
+      margin-top: 24rpx;
+      border-radius: 20rpx;
+      overflow: hidden;
+    }
+
+    .th {
+      height: 80rpx;
+      display: flex;
+      margin-bottom: 12rpx;
+
+      .v1 {
+        width: 25%;
+        height: 80rpx;
+        line-height: 80rpx;
+        text-align: center;
+        font-size: 24rpx;
+        color: #333;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        &.v2 {
+          width: 50%;
+        }
+
+        .img {
+          width: 80rpx;
+          height: 80rpx;
+          margin-right: 12rpx;
+        }
+
+        .image {
+          height: 40rpx;
+          width: 70rpx;
+          margin-left: 20rpx;
+          display: inline-block;
+          transform: translateY(5rpx);
+        }
+
+        &.active {
+          color: $uni-primary;
+        }
+      }
+    }
+
   }
 
   .ne-block {

@@ -62,6 +62,10 @@ export default {
         url: '/pages/detail/detail?id=' + id
       })
     },
+    onLoad({egg}) {
+      console.log(egg);
+      if (egg) this.tap(this.eggs.find(r => r.text === egg));
+    },
     tap(item) {
       this.egg = item;
       getList({
