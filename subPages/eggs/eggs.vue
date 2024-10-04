@@ -1,7 +1,7 @@
 <template>
   <view class="ne-eggs">
     <uni-list :border="false" v-if="!show">
-      <uni-list-item v-for="item in eggs" :title="item.text" @tap="tap(item)"></uni-list-item>
+      <uni-list-item v-for="item in eggs" :title="item.text" @tap="tap(item)" :key="item.text"></uni-list-item>
     </uni-list>
 
     <view v-if="show">
@@ -22,7 +22,7 @@
               <view class="v1">单一蛋群</view>
               <view class="v1">双蛋群</view>
             </view>
-            <view class="th" v-for="item in data">
+            <view class="th" v-for="item in data" :key="item.cnName" @tap="to(item.id)">
               <view class="v1">
                 <image class="img" :src="`https://pokepast.es/img/pokemon/${inter(item.id)}-0.png`"></image>
                 <text>{{ item.cnName }}</text>
@@ -57,6 +57,11 @@ export default {
       if (!i) return i;
       return parseInt(i)
     },
+    to(id) {
+      uni.navigateTo({
+        url: '/pages/detail/detail?id=' + id
+      })
+    },
     tap(item) {
       this.egg = item;
       getList({
@@ -87,6 +92,12 @@ export default {
     border: 0 !important;
   }
 
+  .uni-collapse {
+    margin-top: 24rpx;
+    border-radius: 20rpx;
+    overflow: hidden;
+  }
+
   .th {
     height: 80rpx;
     display: flex;
@@ -112,12 +123,6 @@ export default {
         color: $uni-primary;
       }
     }
-  }
-
-  .uni-collapse {
-    margin-top: 24rpx;
-    border-radius: 20rpx;
-    overflow: hidden;
   }
 
 

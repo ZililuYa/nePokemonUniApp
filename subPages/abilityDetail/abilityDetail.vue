@@ -25,7 +25,7 @@
             <view class="v1">特性二</view>
             <view class="v1">隐藏特性</view>
           </view>
-          <view class="th" v-for="item in pokemon">
+          <view class="th" v-for="item in pokemon" :key="item.cnName" @tap="to(item.id)">
             <view class="v1 t1">
               <image class="img" :src="`https://pokepast.es/img/pokemon/${inter(item.id)}-0.png`"></image>
               <text>{{ item.cnName }}</text>
@@ -62,7 +62,15 @@ export default {
       data: {}
     }
   },
-  methods: {inter},
+  methods: {
+    inter, to(id) {
+
+      uni.navigateTo({
+        url: '/pages/detail/detail?id=' + id
+      })
+
+    }
+  },
   mounted() {
   },
   onLoad(option) {
@@ -70,6 +78,9 @@ export default {
     getAbility(option.id).then(res => {
       console.log(res)
       this.data = res.data;
+      uni.setNavigationBarTitle({
+        title: this.data.cnName || this.data.name
+      });
 
       getList({
         page: 1,

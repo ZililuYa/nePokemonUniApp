@@ -62,7 +62,21 @@ page {
 .mt-10 {
   margin-top: 24rpx;
 }
+
+.mt-5 {
+  margin-top: 12rpx !important;
+}
+
 view {
   box-sizing: border-box;
+}
+
+.flex-center {
+  display: flex;
+  justify-content: center;
+}
+
+.center {
+  text-align: center;
 }
 </style>

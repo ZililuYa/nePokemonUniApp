@@ -1,5 +1,5 @@
 <template>
-  <view class="ne-skill">
+  <view class="ne-skill" v-if="data.cnName">
     <image class="img" :src="thumb(id)" alt=""></image>
 
     <view style="padding: 0 24rpx">
@@ -11,7 +11,7 @@
         <view class="li">
           <view style="display: flex" class="fl">
             {{ data.cnName }}
-            <text style="font-size: 22rpx;margin-left: 24rpx">{{ data.enName }} / {{ data.jpName }}</text>
+            <text style="font-size: 22rpx;margin-left: 24rpx;color: #999">{{ data.enName }} / {{ data.jpName }}</text>
           </view>
           <view class="fr">招式</view>
         </view>
@@ -49,23 +49,72 @@
           <view class="fr">目标</view>
         </view>
       </view>
+
+
+      <view class="title">
+        描述
+      </view>
+      <view class="content">
+        {{ data.content }}
+        <view style="height: 24rpx"></view>
+
+        <template v-for="(item) in data.moreInfoExt">
+          <view style="margin-top: 12rpx;" :key="item">{{ item }}</view>
+        </template>
+      </view>
+
+
+      <uni-collapse ref="collapse" v-model="value" v-if="pokemon && pokemon.length">
+        <uni-collapse-item title="可以学会该招式的宝可梦" :border="false">
+          <view style="padding-bottom: 24rpx;overflow: hidden">
+            <view class="th">
+              <view class="v1">宝可梦</view>
+              <view class="v1">世代</view>
+            </view>
+            <template v-for="(item) in pokemon">
+              <view class="th" :key="item.id" @tap="to(item.id)">
+                <view class="v1">
+                  <image class="img" :src="`https://pokepast.es/img/pokemon/${inter(item.id)}-0.png`"></image>
+                  <text>{{ item.cnName }}</text>
+                </view>
+                <view class="v1">{{ item.generation }}</view>
+              </view>
+            </template>
+          </view>
+        </uni-collapse-item>
+      </uni-collapse>
+
+
     </view>
   </view>
 </template>
 
 <script>
-import {getSkill} from "../../server";
+import {getSkill, getSkillPokemon} from "../../server";
 import attributeTag from "../../components/attributeTag.vue";
 
 export default {
   components: {attributeTag},
   data() {
     return {
+      value: ['0'],
       id: 0,
-      data: {},
+      data: {
+        moreInfoExt: []
+      },
+      pokemon: []
     }
   },
   methods: {
+    to(id) {
+      uni.navigateTo({
+        url: '/pages/detail/detail?id=' + id
+      })
+    },
+    inter(i) {
+      if (!i) return i;
+      return parseInt(i)
+    },
     thumb(id) {
       if (id <= 559) {
         return `https://s1.52poke.com/assets/animoves/AniMove${id < 10 ? '00' + id : id < 100 ? '0' + id : id}.gif`
@@ -101,9 +150,18 @@ export default {
   onLoad(option) {
     console.log(option)
     this.id = option.id;
+
+    getSkillPokemon(option.id, {page: 1, per_page: 100}).then(res => {
+      console.log(res)
+      this.pokemon = res.data.result
+    })
+
     getSkill(option.id).then(res => {
       console.log(res)
       this.data = res.data;
+      uni.setNavigationBarTitle({
+        title: res.data.cnName
+      });
     })
   }
 }
@@ -114,6 +172,43 @@ export default {
   background-color: #f5f5f5;
   min-height: 100vh;
   padding: 0 0 64rpx 0;
+
+  .uni-collapse-item-border {
+    border: 0 !important;
+  }
+
+  .uni-collapse {
+    margin-top: 24rpx;
+    border-radius: 20rpx;
+    overflow: hidden;
+  }
+
+  .th {
+    height: 80rpx;
+    display: flex;
+    margin-bottom: 12rpx;
+
+    .v1 {
+      width: 50%;
+      height: 80rpx;
+      line-height: 80rpx;
+      text-align: center;
+      font-size: 24rpx;
+      color: #333;
+      display: flex;
+      justify-content: center;
+
+      .img {
+        width: 80rpx;
+        height: 80rpx;
+        margin-right: 12rpx;
+      }
+
+      &.active {
+        color: $uni-primary;
+      }
+    }
+  }
 
   .right {
     display: flex;

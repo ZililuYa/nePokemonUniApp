@@ -62,12 +62,16 @@
     "mp-weixin" : {
         "appid" : "wx3ae136a8e3bd1b48",
         "setting" : {
-            "urlCheck" : false
+            "urlCheck" : false,
+            "minified" : true
         },
         "usingComponents" : true
     },
     "vueVersion" : "2",
     "mp-qq" : {
-        "appid" : "1109772164"
+        "appid" : "1109772164",
+        "setting" : {
+            "minified" : true
+        }
     }
 }

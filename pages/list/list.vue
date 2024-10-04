@@ -183,9 +183,9 @@ export default {
     },
     click(item) {
       // console.log(item)
-      // uni.navigateTo({
-      //   url: '/pages/info/info?id=' + item.id
-      // })
+      uni.navigateTo({
+        url: '/pages/detail/detail?id=' + item.id
+      })
     },
     blur() {
     },
