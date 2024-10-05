@@ -23,3 +23,12 @@ export function createApp() {
   }
 }
 // #endif
+
+
+
+// {
+//     "pagePath": "pages/pvp/pvp",
+//     "iconPath": "static/tabs/pvp0.png",
+//     "selectedIconPath": "static/tabs/pvp.png",
+//     "text": "对战数据"
+// },

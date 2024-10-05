@@ -160,12 +160,6 @@
         "text": "常用资料"
       },
       {
-        "pagePath": "pages/pvp/pvp",
-        "iconPath": "static/tabs/pvp0.png",
-        "selectedIconPath": "static/tabs/pvp.png",
-        "text": "对战数据"
-      },
-      {
         "pagePath": "pages/me/me",
         "iconPath": "static/tabs/me0.png",
         "selectedIconPath": "static/tabs/me.png",

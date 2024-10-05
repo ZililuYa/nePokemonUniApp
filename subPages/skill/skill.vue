@@ -1,6 +1,6 @@
 <template>
   <view class="ne-skill" v-if="data.cnName">
-    <image class="img" :src="thumb(id)" alt=""></image>
+    <image class="img" :src="thumb(id)" alt="" v-if="id <= 559"></image>
 
     <view style="padding: 0 24rpx">
       <view class="title">
@@ -34,7 +34,7 @@
         <view class="ne-li">
           <view class="ne-left">命中:</view>
           <view class="ne-right">
-            {{ data.hit === '-' ? '-' : data.hit + '%' }}
+            {{ data.hit === '—' ? data.hit : data.hit + '%' }}
           </view>
         </view>
         <view class="ne-li">
@@ -125,8 +125,8 @@ export default {
     thumb(id) {
       if (id <= 559) {
         return `https://s1.52poke.com/assets/animoves/AniMove${id < 10 ? '00' + id : id < 100 ? '0' + id : id}.gif`
-      } else
-        return `https://pokepast.es/img/pokemon/${this.inter(id)}-0.png`
+      }
+      return ''
     },
     pp(pp) {
       pp = parseInt(pp);

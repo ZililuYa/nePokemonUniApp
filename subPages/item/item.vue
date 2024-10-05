@@ -13,7 +13,7 @@
         <view class="ne-right">
           {{ data.type }}
         </view>
-        <text class="ne-left">分类</text>
+        <text class="ne-left">分类:</text>
       </view>
     </view>
 

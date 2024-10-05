@@ -2,8 +2,18 @@
   <view class="ne-detail" v-if="pokemon">
 
     <view class="ne-top">
-      <image class="icon menu" src="@/static/icon/collect.png"></image>
-      <image class="icon" src="@/static/icon/copy.png"></image>
+      <!--      <image class="icon menu" src="@/static/icon/collect.png"></image>-->
+
+
+      <uni-transition :show="true" ref="ani" class="icon menu">
+        <uni-icons @tap="toggleFavorite" :type="isFavorite?'star-filled':'star'" size="26"
+                   color="#ff4d4d"></uni-icons>
+      </uni-transition>
+
+
+      <picker @change="bindPickerChange" :value="sliderIndex" :range="array" v-if="array.length>1">
+        <image class="icon" src="@/static/icon/copy.png"></image>
+      </picker>
       <view style="display: flex;justify-content: center;">
         <slider :data="menu" :width="90" v-model="sliderIndex" ref="slider" @change="change"></slider>
       </view>
@@ -22,7 +32,7 @@
             {{ pokemon.no }}
           </view>
           <view class="ne-right">
-            {{ pokemon.cnName }} / {{ pokemon.jpName }} / {{ pokemon.enName }}
+            {{ pokemon.morphologyName || pokemon.cnName }} / {{ pokemon.jpName }} / {{ pokemon.enName }}
           </view>
         </view>
         <view class="ne-li" v-if="id<650">
@@ -47,16 +57,20 @@
             <attributeTag v-if="pokemon.attributes[0]" :name="pokemon.attributes[0].name" class="tag"></attributeTag>
           </view>
         </view>
-        <view class="ne-li">
+        <view class="ne-li" v-if="pokemon.commonFeatures">
           <view class="ne-left">
             特性:
           </view>
           <view class="ne-right">
-            <text style="color: #007aff" v-if="pokemon.commonFeature[1]" @tap="feature(pokemon.commonFeature[1])">
-              {{ pokemon.commonFeature[1] }}
+            <text style="color: #007aff" v-if="pokemon.commonFeatures[1]"
+                  @tap="feature(pokemon.commonFeatures[1].cnName)">
+              {{ pokemon.commonFeatures[1].cnName }}
             </text>
             <view style="width: 24rpx"></view>
-            <text style="color: #007aff" @tap="feature(pokemon.commonFeature[0])">{{ pokemon.commonFeature[0] }}</text>
+            <text style="color: #007aff" @tap="feature(pokemon.commonFeatures[0].cnName)">{{
+                pokemon.commonFeatures[0].cnName
+              }}
+            </text>
           </view>
         </view>
         <view class="ne-li" v-if="pokemon.hideFeature">
@@ -337,7 +351,9 @@ export default {
   data() {
     const platform = uni.getSystemInfoSync().uniPlatform;
     return {
+      isFavorite: false,
       value: [],
+      array: [],
       platform,
       sliderIndex: 0,
       upgrades: [],
@@ -365,6 +381,46 @@ export default {
     };
   },
   methods: {
+    toggleFavorite() {
+      this.isFavorite = !this.isFavorite;
+      let favorite = uni.getStorageSync('favorite');
+
+      if (this.isFavorite) {
+        this.$refs.ani.step({
+          scale: '1.5',
+          rotate: '180'
+        })
+        this.$refs.ani.step({
+              scale: '1',
+              rotate: '0'
+            },
+            {
+              timingFunction: 'ease-in',
+              duration: 200
+            })
+        // 开始执行动画
+        this.$refs.ani.run(() => {
+          favorite = favorite ? [...favorite, this.id] : [this.id];
+          uni.setStorageSync('favorite', favorite);
+          uni.showToast({
+            title: '已添加到收藏',
+            icon: 'success'
+          });
+        })
+      } else {
+        favorite = favorite.filter(r => r !== this.id);
+        uni.setStorageSync('favorite', favorite);
+      }
+    },
+    bindPickerChange(e) {
+      console.log(e.detail.value);
+      this.showIndex = parseInt(e.detail.value);
+      this.pokemon = {...this.pokemon, ...this.forms[this.showIndex]};
+
+      this.pokemon.commonFeature = this.pokemon.commonFeature.split(',').map(s => s.trim())
+      this.pokemon.eggGroup = this.pokemon.eggGroup.split(',').map(s => s.trim());
+
+    },
     to(item) {
       uni.navigateTo({
         url: '/subPages/skill/skill?id=' + item.skillId,
@@ -436,8 +492,6 @@ export default {
     async fetchPokemonDetails(id) {
       try {
         this.pokemon = (await getPokemonDetails(id)).data;
-        this.pokemon.commonFeature = this.pokemon.commonFeature.split(',').map(s => s.trim())
-        this.pokemon.eggGroup = this.pokemon.eggGroup.split(',').map(s => s.trim());
         console.log('Pokemon details:', this.pokemon);
 
         uni.setNavigationBarTitle({
@@ -445,6 +499,8 @@ export default {
         });
 
         this.forms = (await getPokemonDetailsForms(id)).data
+        this.bindPickerChange({detail: {value: 0}});
+        this.array = this.forms.map(item => item.morphologyName);
         this.upgrades = (await getPokemonDetailsUpgrades(id)).data;
 
 
@@ -512,6 +568,10 @@ export default {
   },
   onLoad({id}) {
     this.id = id;
+    let favorite = uni.getStorageSync('favorite');
+    if (favorite && favorite.indexOf(id) !== -1) {
+      this.isFavorite = true;
+    }
     this.fetchPokemonDetails(id);
   }
 };

@@ -12,7 +12,7 @@
       描述
     </view>
     <view class="content">
-      {{ data.markdownContent }}
+      <view v-for="(item, i) in content" :key="i" class="ne-c">{{ item }}</view>
     </view>
 
 
@@ -59,6 +59,7 @@ export default {
     return {
       value: ['0'],
       pokemon: [],
+      content: [],
       data: {}
     }
   },
@@ -78,6 +79,7 @@ export default {
     getAbility(option.id).then(res => {
       console.log(res)
       this.data = res.data;
+      this.content = res.data.markdownContent.split('\n');
       uni.setNavigationBarTitle({
         title: this.data.cnName || this.data.name
       });
@@ -109,6 +111,9 @@ export default {
 
   .uni-collapse-item-border {
     border: 0 !important;
+  }
+  .ne-c + .ne-c {
+    margin-top: 12rpx;
   }
 
   .th {

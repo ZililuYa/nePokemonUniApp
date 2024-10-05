@@ -30,12 +30,14 @@ export default {
       data: [{
         title: '清除缓存',
         img: '/static/icon/Ball.png',
-        text: '清除缓存数据成功~🥳'
+        text: '清除缓存数据成功~🥳',
+        type: 'clear',
       }, {
         title: '设置',
         img: '/static/icon/Ball.png'
       }, {
         title: '关于神奇宝贝图鉴',
+        text: '作者vx： ZililuYa ~🥳',
         img: '/static/icon/MasterBall.png'
       }],
       avatarUrl: uni.getStorageSync("avatarUrl")
@@ -43,14 +45,19 @@ export default {
   },
   methods: {
     to(item) {
-      if (!item.to)
-        return uni.showToast({
+      if (item.type === 'clear') {
+        uni.clearStorageSync();
+      }
+      if (!item.to) {
+        uni.showToast({
           title: item.text || '功能在来的路上~☺️',
           icon: 'none'
         })
-      uni.navigateTo({
-        url: item.to
-      })
+      } else {
+        uni.navigateTo({
+          url: item.to
+        })
+      }
     },
     onChooseAvatar(avatar) {
       uni.setStorageSync("avatarUrl", avatar.detail.avatarUrl)
