@@ -111,3 +111,72 @@ export const inter = (i) => {
     if (!i) return i;
     return parseInt(i)
 }
+
+export const natures = [{
+    "nature": "勤奋", "increased_stat": "无", "decreased_stat": "无", "likes_flavor": "无", "dislikes_flavor": "无"
+}, {
+    "nature": "怕寂寞", "increased_stat": "攻击", "decreased_stat": "防御", "likes_flavor": "辣", "dislikes_flavor": "酸"
+}, {
+    "nature": "勇敢", "increased_stat": "攻击", "decreased_stat": "速度", "likes_flavor": "辣", "dislikes_flavor": "甜"
+}, {
+    "nature": "固执", "increased_stat": "攻击", "decreased_stat": "特攻", "likes_flavor": "辣", "dislikes_flavor": "苦"
+}, {
+    "nature": "顽皮", "increased_stat": "攻击", "decreased_stat": "特防", "likes_flavor": "辣", "dislikes_flavor": "涩"
+}, {
+    "nature": "大胆", "increased_stat": "防御", "decreased_stat": "攻击", "likes_flavor": "酸", "dislikes_flavor": "辣"
+}, {
+    "nature": "悠闲", "increased_stat": "防御", "decreased_stat": "速度", "likes_flavor": "酸", "dislikes_flavor": "甜"
+}, {
+    "nature": "乐天", "increased_stat": "防御", "decreased_stat": "特攻", "likes_flavor": "酸", "dislikes_flavor": "苦"
+}, {
+    "nature": "淘气", "increased_stat": "防御", "decreased_stat": "特防", "likes_flavor": "酸", "dislikes_flavor": "涩"
+}, {
+    "nature": "内敛", "increased_stat": "特攻", "decreased_stat": "攻击", "likes_flavor": "苦", "dislikes_flavor": "辣"
+}, {
+    "nature": "慢吞吞", "increased_stat": "特攻", "decreased_stat": "速度", "likes_flavor": "苦", "dislikes_flavor": "甜"
+}, {
+    "nature": "温和", "increased_stat": "特攻", "decreased_stat": "防御", "likes_flavor": "苦", "dislikes_flavor": "酸"
+}, {
+    "nature": "害羞", "increased_stat": "特攻", "decreased_stat": "特防", "likes_flavor": "苦", "dislikes_flavor": "涩"
+}, {
+    "nature": "马虎", "increased_stat": "特防", "decreased_stat": "攻击", "likes_flavor": "涩", "dislikes_flavor": "辣"
+}, {
+    "nature": "温顺", "increased_stat": "特防", "decreased_stat": "防御", "likes_flavor": "涩", "dislikes_flavor": "酸"
+}, {
+    "nature": "慎重", "increased_stat": "特防", "decreased_stat": "特攻", "likes_flavor": "涩", "dislikes_flavor": "苦"
+}, {
+    "nature": "自大", "increased_stat": "特防", "decreased_stat": "速度", "likes_flavor": "涩", "dislikes_flavor": "甜"
+}, {
+    "nature": "胆小", "increased_stat": "速度", "decreased_stat": "攻击", "likes_flavor": "甜", "dislikes_flavor": "辣"
+}, {
+    "nature": "急躁", "increased_stat": "速度", "decreased_stat": "防御", "likes_flavor": "甜", "dislikes_flavor": "酸"
+}, {
+    "nature": "爽朗", "increased_stat": "速度", "decreased_stat": "特攻", "likes_flavor": "甜", "dislikes_flavor": "苦"
+}, {
+    "nature": "天真", "increased_stat": "速度", "decreased_stat": "特防", "likes_flavor": "甜", "dislikes_flavor": "涩"
+}, {
+    "nature": "认真", "increased_stat": "无", "decreased_stat": "无", "likes_flavor": "无", "dislikes_flavor": "无"
+}
+    // ,
+    // {
+    //     "nature": "浮躁",
+    //     "increased_stat": "无",
+    //     "decreased_stat": "无",
+    //     "likes_flavor": "无",
+    //     "dislikes_flavor": "无"
+    // },
+    // {
+    //     "nature": "狂妄",
+    //     "increased_stat": "无",
+    //     "decreased_stat": "无",
+    //     "likes_flavor": "无",
+    //     "dislikes_flavor": "无"
+    // },
+    // {
+    //     "nature": "义气",
+    //     "increased_stat": "无",
+    //     "decreased_stat": "无",
+    //     "likes_flavor": "无",
+    //     "dislikes_flavor": "无"
+    // }
+]

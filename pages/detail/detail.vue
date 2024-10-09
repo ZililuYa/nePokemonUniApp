@@ -240,8 +240,25 @@
       </view>
 
 
-      <view class="ne-block mt-10">
-        进化 - 待补充
+      <view class="ne-block mt-10" v-if="upgrades && upgrades.length">
+
+        <view v-for="(upgrade, a) in upgrades" class="pm-upgrade" :key="upgrade.title">
+          <view class="pm-title">
+            {{ upgrade.title }}
+          </view>
+          <view class="pm-item-list" v-if="upgrade.items && upgrade.items.length" v-for="item in upgrade.items"
+                :key="item">
+            <view class="pm-items" v-if="item && item.length" v-for="i in item" :key="i">
+              <view class="pm-item flex-center">
+                <image class="pm-image" :src="i.image" @tap="toPm" :data-data="i"></image>
+              </view>
+              <view class="pm-item-text center" v-if="i.upgradeInfo">
+                {{ i.upgradeInfo }}
+              </view>
+            </view>
+          </view>
+        </view>
+
       </view>
 
     </view>
@@ -324,7 +341,7 @@
       <!-- #endif -->
     </view>
     <view style="width: 100%" v-if="platform==='mp-qq'">
-      <!-- #ifdef MP-WEIXIN -->
+      <!-- #ifdef MP-QQ -->
       <ad unit-id="27d0bf0fca1897c57355f3e74e301bfc"></ad>
       <!-- #endif -->
     </view>
@@ -336,7 +353,7 @@
 
 <script>
 import {
-  getAbilityList,
+  getAbilityList, getList,
   getPokemonDetails,
   getPokemonDetailsForms,
   getPokemonDetailsSkills,
@@ -350,6 +367,7 @@ export default {
   components: {attributeTag, slider},
   data() {
     const platform = uni.getSystemInfoSync().uniPlatform;
+    console.log({platform});
     return {
       isFavorite: false,
       value: [],
@@ -381,6 +399,29 @@ export default {
     };
   },
   methods: {
+    toPm(e) {
+      let name = e.target.dataset.data.name;
+      console.log(name, this.forms);
+      if (this.forms.find(f => f.morphologyName === name)) {
+        const value = this.forms.findIndex(f => f.morphologyName === name);
+        this.bindPickerChange({detail: {value}});
+        uni.pageScrollTo({
+          scrollTop: 0,
+          duration: 300  // 滚动动画时长，单位ms
+        });
+        return;
+      }
+      name = name.replace('[阿罗拉]', '').trim();
+      uni.showLoading();
+      getList({page: 1, per_page: 10, name}).then(res => {
+        if (!res.data.result.length) return uni.showToast({title: '未找到该宝可梦', icon: 'none'});
+        let i = res.data.result.length - 1;
+        uni.hideLoading();
+        uni.navigateTo({
+          url: '/pages/detail/detail?id=' + res.data.result[i].id
+        })
+      })
+    },
     toggleFavorite() {
       this.isFavorite = !this.isFavorite;
       let favorite = uni.getStorageSync('favorite');
@@ -502,6 +543,7 @@ export default {
         this.bindPickerChange({detail: {value: 0}});
         this.array = this.forms.map(item => item.morphologyName);
         this.upgrades = (await getPokemonDetailsUpgrades(id)).data;
+        console.log('Upgrades:', this.upgrades);
 
 
       } catch (error) {
@@ -685,6 +727,33 @@ export default {
     border-radius: 20px;
     background-color: #fff;
     padding: 24rpx;
+
+    .pm-item-list + .pm-item-list {
+      margin-top: 24rpx;
+      border-top: 1px solid #eee;
+      padding-top: 24rpx;
+    }
+
+    .pm-image {
+      width: 100rpx;
+      height: 100rpx;
+    }
+
+    .pm-upgrade + .pm-upgrade {
+      margin-top: 48rpx;
+    }
+
+
+    .pm-title {
+      font-size: 30rpx;
+      fwight: 500;
+    }
+
+    .pm-item-text {
+      font-size: 24rpx;
+      color: #333;
+      margin: 24rpx 0;
+    }
 
     .img {
       width: 300rpx;
