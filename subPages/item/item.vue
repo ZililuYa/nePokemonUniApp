@@ -24,13 +24,19 @@
       {{ data.effect }}
     </view>
 
-    <view class="title">
+    <view class="title" v-if="data.content">
       描述
     </view>
-    <view class="content">
+    <view class="content" v-if="data.content">
       {{ data.content }}
     </view>
 
+    <view class="title" v-if="data.effect">
+      效果
+    </view>
+    <view class="content" v-if="data.effect">
+      {{ data.effect }}
+    </view>
 
   </view>
 </template>
@@ -40,6 +46,12 @@ import {getItem} from "../../server";
 import UniSection from "../../uni_modules/uni-section/components/uni-section/uni-section.vue";
 
 export default {
+  onShareAppMessage: function () {
+    return {
+      title: '精灵宝可梦',
+      path: '/pages/list/list'
+    }
+  },
   components: {UniSection},
   data() {
     return {

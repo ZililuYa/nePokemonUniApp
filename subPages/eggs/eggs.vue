@@ -24,7 +24,7 @@
             </view>
             <view class="th" v-for="item in data" :key="item.cnName" @tap="to(item.id)">
               <view class="v1">
-                <image class="img" :src="`https://pokepast.es/img/pokemon/${inter(item.id)}-0.png`"></image>
+                <image class="img" :src="item.image"></image>
                 <text>{{ item.cnName }}</text>
               </view>
               <view class="v1" :class="{active: item.eggGroup[0] === egg.text }">{{ item.eggGroup[0] }}</view>
@@ -43,6 +43,12 @@ import {eggs} from "../../utils";
 import {getList} from "../../server";
 
 export default {
+  onShareAppMessage: function () {
+    return {
+      title: '精灵宝可梦',
+      path: '/pages/list/list'
+    }
+  },
   data() {
     return {
       value: ['0'],

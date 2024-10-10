@@ -24,6 +24,12 @@
 
 <script>
 export default {
+  onShareAppMessage: function () {
+    return {
+      title: '精灵宝可梦',
+      path: '/pages/list/list'
+    }
+  },
   data() {
     return {
       appVersion: '',

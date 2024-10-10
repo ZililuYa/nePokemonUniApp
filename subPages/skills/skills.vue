@@ -47,6 +47,12 @@ import {getSkillList} from "../../server";
 import attributeTag from "../../components/attributeTag.vue";
 
 export default {
+  onShareAppMessage: function () {
+    return {
+      title: '精灵宝可梦',
+      path: '/pages/list/list'
+    }
+  },
   components: {attributeTag},
   data() {
     return {

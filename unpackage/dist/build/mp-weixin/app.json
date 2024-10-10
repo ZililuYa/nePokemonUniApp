@@ -1,13 +1,59 @@
 {
   "pages": [
-    "pages/index/index"
+    "pages/list/list",
+    "pages/calc/calc",
+    "pages/me/me",
+    "pages/info/info",
+    "pages/pvp/pvp",
+    "pages/detail/detail",
+    "subPages/skills/skills",
+    "subPages/typeConflict/typeConflict",
+    "subPages/items/items",
+    "subPages/item/item",
+    "subPages/ability/ability",
+    "subPages/nature/nature",
+    "subPages/abilityDetail/abilityDetail",
+    "subPages/eggs/eggs",
+    "subPages/skill/skill"
   ],
   "subPackages": [],
   "window": {
-    "navigationBarTextStyle": "black",
-    "navigationBarTitleText": "uni-app",
-    "navigationBarBackgroundColor": "#F8F8F8",
-    "backgroundColor": "#F8F8F8"
+    "navigationBarTextStyle": "white",
+    "navigationBarTitleText": "神奇宝贝图鉴",
+    "navigationBarBackgroundColor": "#FF4D4D",
+    "backgroundColor": "#FF4D4D"
+  },
+  "tabBar": {
+    "color": "#333333",
+    "selectedColor": "#FF4D4D",
+    "backgroundColor": "#FFFFFF",
+    "borderStyle": "black",
+    "list": [
+      {
+        "pagePath": "pages/list/list",
+        "iconPath": "static/tabs/pokemon0.png",
+        "selectedIconPath": "static/tabs/pokemon.png",
+        "text": "宝可梦"
+      },
+      {
+        "pagePath": "pages/calc/calc",
+        "iconPath": "static/tabs/calc0.png",
+        "selectedIconPath": "static/tabs/calc.png",
+        "text": "计算器"
+      },
+      {
+        "pagePath": "pages/info/info",
+        "iconPath": "static/tabs/info0.png",
+        "selectedIconPath": "static/tabs/info.png",
+        "text": "常用资料"
+      },
+      {
+        "pagePath": "pages/me/me",
+        "iconPath": "static/tabs/me0.png",
+        "selectedIconPath": "static/tabs/me.png",
+        "text": "我的"
+      }
+    ]
   },
   "usingComponents": {}
 }

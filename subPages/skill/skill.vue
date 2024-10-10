@@ -46,13 +46,13 @@
         <view class="ne-li">
           <view class="ne-left">优先度:</view>
           <view class="ne-right">
-            -
+            {{ data.priority || '—' }}
           </view>
         </view>
         <view class="ne-li">
           <view class="ne-left">目标:</view>
           <view class="ne-right">
-            -
+            {{ data.target || '—' }}
           </view>
         </view>
       </view>
@@ -81,7 +81,7 @@
             <template v-for="(item) in pokemon">
               <view class="th" :key="item.id" @tap="to(item.id)">
                 <view class="v1">
-                  <image class="img" :src="`https://pokepast.es/img/pokemon/${inter(item.id)}-0.png`"></image>
+                  <image class="img" :src="item.image"></image>
                   <text>{{ item.cnName }}</text>
                 </view>
                 <view class="v1">{{ item.generation }}</view>
@@ -101,6 +101,12 @@ import {getSkill, getSkillPokemon} from "../../server";
 import attributeTag from "../../components/attributeTag.vue";
 
 export default {
+  onShareAppMessage: function () {
+    return {
+      title: '精灵宝可梦',
+      path: '/pages/list/list'
+    }
+  },
   components: {attributeTag},
   data() {
     return {

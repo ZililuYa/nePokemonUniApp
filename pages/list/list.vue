@@ -18,7 +18,7 @@
 
 
       <view style="display: flex;justify-content: center;" v-if="!searchShow">
-        <slider :data="menu" :width="90"></slider>
+        <slider :data="menu" :width="90" v-model="sliderIndex" ref="slider" @change="change"></slider>
       </view>
 
 
@@ -38,7 +38,7 @@
         <template v-for="item in data">
 
           <uni-list-item :key="item.id" class="list-item"
-                         :thumb="thumb(item.id)"
+                         :thumb="item.image"
                          @tap.prevent.stop="click(item)"
                          direction="row"
                          thumb-size="lg">
@@ -50,7 +50,7 @@
                 <text style="font-size: 20rpx;color: #999;margin-left: 20rpx">{{ item.jpName }}</text>
               </view>
               <view style="font-size: 20rpx;color: #999;margin-top: 10rpx">
-                {{ item.no }}
+                {{ sliderIndex ? item.dexNo : item.no }}
               </view>
               <view style="font-size: 20rpx;color: #999;margin-top: 10rpx">
                 {{ item.features }}
@@ -89,7 +89,7 @@
 
             </view>
           </uni-section>
-          <uni-section class="mb-10" title="世代" type="line">
+          <uni-section class="mb-10" title="世代" type="line" v-if="!sliderIndex">
             <view style="overflow: hidden">
               <view v-for="item in century" :text="item.text" class="pm-li" :key="item"
                     :class="{active: item.value === centuryValue}" @tap="centurySet(item.value)">
@@ -125,6 +125,7 @@ export default {
   components: {slider, attributeTag},
   data() {
     return {
+      sliderIndex: 0,
       menu: [{
         title: '全国图鉴',
       }, {
@@ -152,11 +153,9 @@ export default {
     this.next();
   },
   methods: {
-    thumb(id) {
-      // if (id <= 649) {
-      //   return `https://s1.52poke.com/assets/sprite/gen5/${id < 10 ? '00' + id : id < 100 ? '0' + id : id}s.gif`
-      // } else
-      return `https://pokepast.es/img/pokemon/${this.inter(id)}-0.png`
+    change() {
+      this.sliderIndex = this.$refs.slider.index;
+      this.refreshData();
     },
     refreshData() {
       this.$refs.popup.close();
@@ -243,14 +242,16 @@ export default {
     },
     getData() {
       this.status = 'loading';
-      getList({
+      let params = {
         page: this.page,
         per_page: this.pageSize,
         name: this.searchValue || '',
         numb: this.centuryValue || '',
         attribute: this.attributesValue || '',
         generation: this.century.find(item => item.value === this.centuryValue)?.text || ''
-      }).then(res => {
+      }
+      if (this.$refs.slider.index) params.dex_name = '帕底亚图鉴';
+      getList(params).then(res => {
         this.data = this.data.concat(res.data.result)
         if (res.data.result.length < this.pageSize) {
           this.status = 'no-more';

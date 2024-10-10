@@ -27,7 +27,7 @@
           </view>
           <view class="th" v-for="item in pokemon" :key="item.cnName" @tap="to(item.id)">
             <view class="v1 t1">
-              <image class="img" :src="`https://pokepast.es/img/pokemon/${inter(item.id)}-0.png`"></image>
+              <image class="img" :src="item.image"></image>
               <text>{{ item.cnName }}</text>
             </view>
             <view class="v1" :class="{active: item.commonFeature[0] === data.cnName }">{{
@@ -55,6 +55,12 @@ import {getAbility, getList} from "../../server";
 import {inter} from "../../utils";
 
 export default {
+  onShareAppMessage: function () {
+    return {
+      title: '精灵宝可梦',
+      path: '/pages/list/list'
+    }
+  },
   data() {
     return {
       value: ['0'],

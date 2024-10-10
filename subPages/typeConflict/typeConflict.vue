@@ -1,8 +1,9 @@
 <template>
   <view class="ne-type-conflict">
 
-    <image src="https://media.52poke.com/wiki/8/8a/%E5%B1%9E%E6%80%A7%E7%9B%B8%E5%85%8B%E8%A1%A8_SWSH.png"
-           class="tc-image"></image>
+    <image
+        src="https://sbds-pokemon.oss-cn-hangzhou.aliyuncs.com/img/img/%E5%B1%9E%E6%80%A7%E7%9B%B8%E5%85%8B%E8%A1%A8_SBDS.png"
+        class="tc-image"></image>
     <view class="ne-tc">
       <view class="title">
         判定
@@ -40,6 +41,12 @@ import {attributes} from "../../utils";
 import AttributeTag from "../../components/attributeTag.vue";
 
 export default {
+  onShareAppMessage: function () {
+    return {
+      title: '精灵宝可梦',
+      path: '/pages/list/list'
+    }
+  },
   components: {AttributeTag},
   data() {
     return {

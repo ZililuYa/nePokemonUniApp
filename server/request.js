@@ -3,7 +3,7 @@ import CryptoJS from './crypto-js';
 
 // 设置 API 基础 URL (可根据环境切换)
 // const BASE_URL = 'http://192.168.1.2:3000'; // 你的 API 基础 URL
-const BASE_URL = 'http://47.98.174.14/front_api'; // 你的 API 基础 URL
+const BASE_URL = 'https://pokemon.cyberpoke.top/front_api'; // 你的 API 基础 URL
 // const BASE_URL = 'http://dex.fantasticmao.cn/front_api'; // 你的 API 基础 URL
 const platform = uni.getSystemInfoSync().uniPlatform;
 
@@ -28,7 +28,6 @@ function decrypt(encryptedData, key) {
 // 封装请求方法
 const request = (url, method, data, headers = {}) => {
     return new Promise((resolve, reject) => {
-        console.log('-------->请求接口：', BASE_URL + url)
         uni.request({
             url: BASE_URL + url, method: method, data: data, header: {
                 'Content-Type': 'application/json', // 默认的请求头
@@ -40,7 +39,8 @@ const request = (url, method, data, headers = {}) => {
                     if (res.data.data) {
                         try {
                             res.data.data = JSON.parse(decrypt(res.data.data, `7WMLslVRhfLkAH0UquWshlXG+poT7w==`))
-                            console.log('-------->返回数据：', res.data)
+                            console.log(`%c-------->请求接口：${BASE_URL + url}`, 'background: #ff4d4d; color: #000', data)
+                            console.log('%c-------->返回数据：', 'background: #2d8cf0; color: #000', res.data)
                         } catch (e) {
                             res.data.data = {};
                         }

@@ -200,7 +200,7 @@
             捕获度:
           </view>
           <view class="ne-right">
-            -
+            {{ pokemon.catchRate || '—' }}
           </view>
         </view>
         <view class="ne-li">
@@ -208,7 +208,7 @@
             初始亲密度:
           </view>
           <view class="ne-right">
-            -
+            {{ pokemon.baseFriendship || '—' }}
           </view>
         </view>
         <view class="ne-li">
@@ -216,7 +216,7 @@
             满级经验:
           </view>
           <view class="ne-right">
-            -
+            {{ pokemon.maxExperience  || '—' }}
           </view>
         </view>
         <view class="ne-li">
@@ -224,7 +224,7 @@
             努力值:
           </view>
           <view class="ne-right">
-            -
+            {{ pokemon.effortValues  || '—' }}
           </view>
         </view>
         <view class="ne-li">
@@ -248,12 +248,15 @@
           </view>
           <view class="pm-item-list" v-if="upgrade.items && upgrade.items.length" v-for="item in upgrade.items"
                 :key="item">
-            <view class="pm-items" v-if="item && item.length" v-for="i in item" :key="i">
+            <view class="pm-items" v-if="item && item.length" v-for="(i, m) in item" :key="i">
               <view class="pm-item flex-center">
                 <image class="pm-image" :src="i.image" @tap="toPm" :data-data="i"></image>
               </view>
               <view class="pm-item-text center" v-if="i.upgradeInfo">
                 {{ i.upgradeInfo }}
+              </view>
+              <view class="pm-item-text center" v-if="!i.upgradeInfo && upgrade.title === '超极巨化' && m===0">
+                {{ i.upgradeInfo || '极巨化' }}
               </view>
             </view>
           </view>
@@ -365,6 +368,12 @@ import {attributes, attributeToId} from "../../utils";
 
 export default {
   components: {attributeTag, slider},
+  onShareAppMessage: function () {
+    return {
+      title: '精灵宝可梦',
+      path: '/pages/list/list'
+    }
+  },
   data() {
     const platform = uni.getSystemInfoSync().uniPlatform;
     console.log({platform});
@@ -405,10 +414,7 @@ export default {
       if (this.forms.find(f => f.morphologyName === name)) {
         const value = this.forms.findIndex(f => f.morphologyName === name);
         this.bindPickerChange({detail: {value}});
-        uni.pageScrollTo({
-          scrollTop: 0,
-          duration: 300  // 滚动动画时长，单位ms
-        });
+
         return;
       }
       name = name.replace('[阿罗拉]', '').trim();
@@ -460,6 +466,11 @@ export default {
 
       this.pokemon.commonFeature = this.pokemon.commonFeature.split(',').map(s => s.trim())
       this.pokemon.eggGroup = this.pokemon.eggGroup.split(',').map(s => s.trim());
+
+      uni.pageScrollTo({
+        scrollTop: 0,
+        duration: 300  // 滚动动画时长，单位ms
+      });
 
     },
     to(item) {
