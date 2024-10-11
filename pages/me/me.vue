@@ -1,15 +1,27 @@
 <template>
   <view class="ne-me">
     <view class="avatar-main">
-      <button class="avatar-wrapper" open-type="chooseAvatar" @chooseavatar="onChooseAvatar">
-        <image class="avatar" :src="avatarUrl" v-if="avatarUrl"></image>
-        <text class="text" v-if="!avatarUrl">获取头像</text>
-      </button>
+      <template v-if="platform==='mp-weixin' || platform === 'mp-alipay'">
+        <!--        微信 / 支付宝-->
+        <button class="avatar-wrapper" open-type="chooseAvatar" @chooseavatar="onChooseAvatar"
+        >
+          <image class="avatar" :src="avatarUrl" v-if="avatarUrl"></image>
+          <image class="avatar" src="@/static/user.png" v-if="!avatarUrl"></image>
+        </button>
+      </template>
+
+      <template v-if="platform==='mp-qq'">
+        <!--        qq -->
+        <button class="avatar-wrapper" open-type="getUserInfo" @getuserinfo="login">
+          <image class="avatar" :src="avatarUrl" v-if="avatarUrl"></image>
+          <image class="avatar" src="@/static/user.png" v-if="!avatarUrl"></image>
+        </button>
+      </template>
     </view>
 
     <uni-list :border="false">
       <uni-list-item :border="false" v-for="item in data" :thumb="item.img" :title="item.title" thumb-size="lg"
-                     :class="item.to?'ok':'no'"
+                     :class="item.to?'ok':'no'" :key="item.title"
                      @tap="to(item)">
 
       </uni-list-item>
@@ -31,8 +43,10 @@ export default {
     }
   },
   data() {
+    const platform = uni.getSystemInfoSync().uniPlatform;
     return {
       appVersion: '',
+      platform,
       data: [{
         title: '清除缓存',
         img: '/static/icon/Ball.png',
@@ -41,15 +55,22 @@ export default {
       }, {
         title: '设置',
         img: '/static/icon/Ball.png'
-      }, {
-        title: '关于神奇宝贝图鉴',
-        text: '作者vx： ZililuYa ~🥳',
-        img: '/static/icon/MasterBall.png'
-      }],
+      }
+        // , {
+        //   title: '关于神奇宝贝图鉴',
+        //   text: '作者vx： ZililuYa ~🥳',
+        //   img: '/static/icon/MasterBall.png'
+        // }
+      ],
       avatarUrl: uni.getStorageSync("avatarUrl")
     }
   },
   methods: {
+    login(res) {
+      console.log(res);
+      uni.setStorageSync("avatarUrl", res.detail.userInfo.avatarUrl)
+      this.avatarUrl = res.detail.userInfo.avatarUrl;
+    },
     to(item) {
       if (item.type === 'clear') {
         uni.clearStorageSync();

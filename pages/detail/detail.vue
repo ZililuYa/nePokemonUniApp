@@ -338,11 +338,11 @@
       </uni-collapse>
     </view>
 
-    <view style="width: 100%" v-if="platform==='mp-weixin'">
-      <!-- #ifdef MP-WEIXIN -->
-      <ad unit-id="adunit-4322de44f112529c"></ad>
-      <!-- #endif -->
-    </view>
+<!--    <view style="width: 100%" v-if="platform==='mp-weixin'">-->
+<!--      &lt;!&ndash; #ifdef MP-WEIXIN &ndash;&gt;-->
+<!--      <ad unit-id="adunit-4322de44f112529c"></ad>-->
+<!--      &lt;!&ndash; #endif &ndash;&gt;-->
+<!--    </view>-->
     <view style="width: 100%" v-if="platform==='mp-qq'">
       <!-- #ifdef MP-QQ -->
       <ad unit-id="27d0bf0fca1897c57355f3e74e301bfc"></ad>

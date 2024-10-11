@@ -1,6 +1,6 @@
 <template>
   <view class="ne-skill" v-if="data.cnName">
-    <image class="img" :src="thumb(id)" alt="" v-if="id <= 559"></image>
+    <image class="img" :src="data.image" alt=""></image>
 
     <view style="padding: 0 24rpx">
       <view class="title">

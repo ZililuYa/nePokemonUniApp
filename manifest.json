@@ -60,7 +60,7 @@
     "quickapp" : {},
     /* 快应用特有相关 */
     "mp-weixin" : {
-        "appid" : "wx3ae136a8e3bd1b48",
+        "appid" : "wx6b852289328345da",
         "setting" : {
             "urlCheck" : false,
             "minified" : true
@@ -70,6 +70,18 @@
     "vueVersion" : "2",
     "mp-qq" : {
         "appid" : "1109772164",
+        "setting" : {
+            "minified" : true
+        },
+        "uniStatistics" : {
+            "enable" : false
+        }
+    },
+    "mp-alipay" : {
+        "appid" : "2021004183656249"
+    },
+    "mp-toutiao" : {
+        "appid" : "tt75ee0353eadaa39a01",
         "setting" : {
             "minified" : true
         }
